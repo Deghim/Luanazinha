@@ -33,7 +33,7 @@ jobs:
         env:
           SITE_URL: https://deghim.github.io
           SITE_BASE: /Luanazinha
-        run: pnpm build:skip-media
+        run: pnpm parse-content && pnpm exec astro build
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
