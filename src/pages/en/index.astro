@@ -1,0 +1,9 @@
+---
+import Base from '../../layouts/Base.astro';
+import EntryStory from '../../components/EntryStory.astro';
+import copy from '../../data/en.json';
+import media from '../../data/media.json';
+---
+<Base lang="en-US" locale="en" title={copy['seo.title']} description={copy['seo.description']}>
+  <EntryStory copy={copy} media={media} locale="en" />
+</Base>

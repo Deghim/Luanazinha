@@ -1,0 +1,39 @@
+---
+import { absoluteUrl, siteBase, withBase } from '../lib/url';
+
+const canonical = absoluteUrl('/', Astro.site);
+const languageUrls = {
+  en: absoluteUrl('/en/', Astro.site),
+  pt: absoluteUrl('/pt/', Astro.site),
+  zh: absoluteUrl('/zh/', Astro.site)
+};
+---
+<!doctype html>
+<html lang="es" data-site-base={siteBase}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={languageUrls.en} />
+    <link rel="alternate" hreflang="pt-BR" href={languageUrls.pt} />
+    <link rel="alternate" hreflang="zh-Hans" href={languageUrls.zh} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <meta http-equiv="refresh" content={`0;url=${languageUrls.en}`} />
+    <title>Jorge — algunas cosas que hago</title>
+  </head>
+  <body>
+    <main>
+      <h1>Choose a language / Escolhe um idioma / 选择语言</h1>
+      <nav aria-label="Language / Idioma / 语言"><a href={withBase('/en/')}>EN</a> · <a href={withBase('/pt/')}>PT</a> · <a href={withBase('/zh/')}>中文</a></nav>
+    </main>
+    <script is:inline define:vars={{ siteBase }}>
+      const targets = { pt: `${siteBase}pt/`, zh: `${siteBase}zh/`, en: `${siteBase}en/` };
+      const language = (navigator.language || '').toLowerCase();
+      const key = language.startsWith('pt') ? 'pt' : language.startsWith('zh') ? 'zh' : 'en';
+      const saved = localStorage.getItem('luana-language');
+      location.replace(targets[saved && targets[saved] ? saved : key]);
+    </script>
+  </body>
+</html>

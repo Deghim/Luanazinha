@@ -1,0 +1,28 @@
+---
+import { withBase } from '../lib/url';
+
+interface MediaVideo {
+  w: number;
+  h: number;
+  poster: string;
+  srcset: { mp4: string; webm: string };
+}
+interface Props {
+  media: MediaVideo;
+  alt: string;
+  caption?: string;
+  className?: string;
+}
+const { media, alt, caption, className = '' } = Astro.props;
+const poster = withBase(media.poster);
+const webm = withBase(media.srcset.webm);
+const mp4 = withBase(media.srcset.mp4);
+---
+<figure class:list={['media-figure', 'video-figure', className]} style={`--media-ratio:${media.w} / ${media.h}`}>
+  <video class="lazy-video" data-lazy-video poster={poster} muted loop playsinline preload="none" aria-label={alt} width={media.w} height={media.h}>
+    <source src={webm} type="video/webm" />
+    <source src={mp4} type="video/mp4" />
+  </video>
+  <noscript><img src={poster} alt={alt} width={media.w} height={media.h} /></noscript>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

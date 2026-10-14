@@ -1,0 +1,12 @@
+:root {
+  --ink: #121110;
+  --bone: #e9e4da;
+  --muted: rgb(233 228 218 / 62%);
+  --ember: #f26b2d;
+  --paper: #e9e4da;
+  --paper-ink: #1a1814;
+  --ease-expo: cubic-bezier(.16, 1, .3, 1);
+  --display: "Instrument Serif", Georgia, serif;
+  --ui: "Geist", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+}

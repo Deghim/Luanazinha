@@ -1,0 +1,187 @@
+---
+import ResponsiveImage from './ResponsiveImage.astro';
+import LazyVideo from './LazyVideo.astro';
+import MediaStrip from './MediaStrip.astro';
+import Lightbox from './Lightbox.astro';
+import Reveal from './Reveal.astro';
+import { withBase } from '../lib/url';
+
+interface Props {
+  copy: Record<string, string>;
+  media: Record<string, any>;
+  locale: 'en' | 'pt' | 'zh';
+}
+const { copy, media, locale } = Astro.props;
+const t = (key: string) => copy[key] ?? key;
+const hero = media['ch0.photo1.media'];
+const languages = [
+  { code: 'en', label: 'EN', href: '/en/' },
+  { code: 'pt', label: 'PT', href: '/pt/' },
+  { code: 'zh', label: '中文', href: '/zh/' },
+];
+const chapters = Array.from({ length: 10 }, (_, index) => ({
+  id: `ch${index}`,
+  number: String(index + 1).padStart(2, '0'),
+  title: index === 0 ? t('ch0.s1.text') : t(`ch${index}.s1.title`),
+}));
+const dayMoments = ['ch1.s2.text', 'ch1.s3.text', 'ch1.s4.text', 'ch1.s5.text', 'ch1.s6.text'];
+const musicItems = [
+  { kind: 'video' as const, media: media['ch2.video1.media'], alt: t('ch2.video1.alt'), caption: t('ch2.video1.caption') },
+  { kind: 'video' as const, media: media['ch2.video2.media'], alt: t('ch2.video2.alt'), caption: t('ch2.video2.caption') },
+  { kind: 'video' as const, media: media['ch2.video3.media'], alt: t('ch2.video3.alt'), caption: t('ch2.video3.caption') },
+];
+const chinaItems = [
+  { kind: 'image' as const, media: media['ch3.photo3.media'], alt: t('ch3.photo3.alt'), caption: t('ch3.photo3.caption') },
+  { kind: 'image' as const, media: media['ch3.photo4.media'], alt: t('ch3.photo4.alt'), caption: t('ch3.photo4.caption') },
+];
+---
+
+<header class="site-chrome">
+<a class="site-name" href={withBase(`/${locale}/`)}>Jorginho</a>
+  <nav class="language-nav" aria-label={t('ui.language_selector_label')}>
+    {languages.map((item) => <a href={withBase(item.href)} aria-current={item.code === locale ? 'page' : undefined} data-language={item.code}>{item.label}</a>)}
+  </nav>
+</header>
+
+<div class="top-progress" aria-hidden="true"><span data-progress-bar></span></div>
+
+<aside class="chapter-rail" aria-label={t('ui.aria.chapter_navigation')}>
+  <button class="chapter-count" type="button" data-chapter-menu-open aria-haspopup="dialog"><span data-current-chapter>01</span> / 10</button>
+  <ol>
+    {chapters.map((chapter) => <li><a href={`#${chapter.id}`} data-chapter-link={chapter.id} aria-label={chapter.title}><span>{chapter.number}</span></a></li>)}
+  </ol>
+</aside>
+
+<div class="mobile-chrome" aria-label={t('ui.aria.chapter_navigation')}>
+  <span><b data-current-chapter-mobile>01</b> / 10</span>
+  <button type="button" data-chapter-menu-open aria-haspopup="dialog">{t('ui.chapter_menu')}</button>
+</div>
+
+<dialog class="chapter-menu" id="chapter-menu" aria-labelledby="chapter-menu-title">
+  <div class="menu-head">
+    <p class="eyebrow" id="chapter-menu-title">{t('ui.chapter_menu')}</p>
+    <button type="button" data-chapter-menu-close aria-label={t('ui.chapter_menu_close')}>×</button>
+  </div>
+  <nav>
+    {chapters.map((chapter) => <a href={`#${chapter.id}`} data-menu-link={chapter.id}><span>{chapter.number}</span><em>{chapter.title}</em></a>)}
+  </nav>
+</dialog>
+
+<main id="main-content" data-story data-locale={locale}>
+  <section class="hero" id="ch0" data-chapter="0" aria-labelledby="hero-title">
+    <picture>
+      <source type="image/avif" srcset={hero.srcset.avif.map((item: any) => `${withBase(item.src)} ${item.w}w`).join(', ')} sizes="100vw" />
+      <img class="hero-media" src={withBase(hero.srcset.webp.at(-1)?.src)} srcset={hero.srcset.webp.map((item: any) => `${withBase(item.src)} ${item.w}w`).join(', ')} sizes="100vw" width={hero.w} height={hero.h} alt={t('ch0.photo1.alt')} fetchpriority="high" decoding="async" />
+    </picture>
+    <div class="hero-scrim" aria-hidden="true"></div>
+    <div class="hero-content">
+      <p class="chapter-kicker">01 / 10</p>
+      <p class="eyebrow">{t('ch0.s4.text')}</p>
+      <h1 id="hero-title" class="hero-title"><Reveal>{t('ch0.s1.text')}</Reveal></h1>
+      <div class="hero-copy" aria-live="polite">
+        <p class="reveal-line">{t('ch0.s2.text')}</p>
+        <p class="reveal-line">{t('ch0.s3.text')}</p>
+      </div>
+      <a class="hero-cta" href="#ch1">{t('ch0.cta')} <span aria-hidden="true">↓</span></a>
+    </div>
+  </section>
+
+  <section class="chapter chapter-one" id="ch1" data-chapter="1" aria-labelledby="ch1-title">
+    <div class="chapter-intro">
+      <p class="chapter-kicker">02 / 10</p>
+      <h2 id="ch1-title">{t('ch1.s1.title')}</h2>
+    </div>
+    <div class="day-stage">
+      <div class="day-copy">
+        <p class="eyebrow">{t('ui.aria.scroll_story')}</p>
+        <ol class="day-moments">
+          {dayMoments.map((key, index) => <li data-moment={index} data-moment-frame={index < 3 ? 0 : index === 3 ? 1 : 2} class:list={{ 'is-active': index === 0 }}><span class="moment-index">0{index + 1} — 05</span><p>{t(key)}</p></li>)}
+        </ol>
+      </div>
+      <div class="day-media" aria-label={t('ui.aria.media_strip')}>
+        <div class="day-frame is-active" data-day-frame="0"><ResponsiveImage media={media['ch1.photo1.media']} alt={t('ch1.photo1.alt')} caption={t('ch1.photo1.caption')} /></div>
+        <div class="day-frame" data-day-frame="1"><LazyVideo media={media['ch1.video2.media']} alt={t('ch1.video2.alt')} caption={t('ch1.video2.caption')} /></div>
+        <div class="day-frame" data-day-frame="2"><ResponsiveImage media={media['ch1.photo3.media']} alt={t('ch1.photo3.alt')} caption={t('ch1.photo3.caption')} /></div>
+      </div>
+    </div>
+    <div class="chapter-paper">
+      <p class="eyebrow">{t('ch1.paper.label')}</p>
+      <p>{t('ch1.s6.text')}</p>
+    </div>
+  </section>
+
+  <section class="chapter chapter-music" id="ch2" data-chapter="2" aria-labelledby="ch2-title">
+    <div class="chapter-intro split-intro">
+      <div><p class="chapter-kicker">03 / 10</p><h2 id="ch2-title">{t('ch2.s1.title')}</h2></div>
+      <p>{t('ch2.s2.text')}</p>
+    </div>
+    <div class="music-collage">
+      {musicItems.map((item, index) => <div class:list={['music-card', `music-card-${index + 1}`]}><LazyVideo media={item.media} alt={item.alt} caption={item.caption} /></div>)}
+      <p class="music-note">{t('ch2.s3.text')} {t('ch2.s4.text')}</p>
+    </div>
+    <div class="music-mobile-strip"><MediaStrip items={musicItems} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <div class="youtube-links" aria-label={t('ch2.s5.text')}>
+      {[1, 2].map((index) => <button type="button" class="youtube-facade" data-youtube-facade data-youtube-url={t(`ch2.video_link_${index}.url`)} data-youtube-title={t(`ch2.video_link_${index}.title`)} aria-label={`${t(`ch2.video_link_${index}.label`)}: ${t(`ch2.video_link_${index}.title`)}`}>
+        <span class="facade-play" aria-hidden="true">▶</span>
+        <span class="facade-copy"><b>{t(`ch2.video_link_${index}.title`)}</b><small>{t(`ch2.video_link_${index}.artist`)}</small></span>
+      </button>)}
+    </div>
+  </section>
+
+  <section class="chapter chapter-china" id="ch3" data-chapter="3" aria-labelledby="ch3-title">
+    <div class="chapter-intro split-intro">
+      <div><p class="chapter-kicker">04 / 10</p><h2 id="ch3-title">{t('ch3.s1.title')}</h2></div>
+      <p>{t('ch3.s2.text')}</p>
+    </div>
+    <div class="china-sheet"><MediaStrip items={chinaItems} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <div class="train-band">
+      <div class="train-copy"><p>{t('ch3.s3.text')}</p><p>{t('ch3.s4.text')}</p><p>{t('ch3.s5.text')}</p></div>
+      <div class="train-videos"><LazyVideo media={media['ch3.video1.media']} alt={t('ch3.video1.alt')} caption={t('ch3.video1.caption')} /><LazyVideo media={media['ch3.video2.media']} alt={t('ch3.video2.alt')} caption={t('ch3.video2.caption')} /></div>
+      <p class="mono-caption">{t('ch3.video1.caption')}</p>
+    </div>
+  </section>
+
+  <section class="chapter paper-chapter truth-chapter" id="ch4" data-chapter="4" aria-labelledby="ch4-title">
+    <div class="chapter-intro"><p class="chapter-kicker">05 / 10</p><h2 id="ch4-title">{t('ch4.s1.title')}</h2><p>{t('ch4.s2.text')}</p></div>
+    <div class="truths" data-truths>{[1, 2, 3].map((index) => <button type="button" data-truth={index}><span>0{index}</span>{t(`ch4.set_main.statement_${index}`)}</button>)}</div>
+    <p class="truth-reveal" data-truth-reveal hidden>{t('ch4.reveal.text')}</p>
+    <button type="button" class="reset-truth" data-truth-reset>{t('ui.reset')}</button>
+  </section>
+
+  <section class="chapter adrenaline" id="ch5" data-chapter="5" aria-labelledby="ch5-title">
+    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">06 / 10</p><h2 id="ch5-title">{t('ch5.s1.title')}</h2></div><p>{t('ch5.s2.text')}</p></div>
+    <div class="bungee-strip"><MediaStrip items={[1, 2, 3].map((index) => ({ kind: 'video' as const, media: media[`ch5.video${index}.media`], alt: t(`ch5.video${index}.alt`), caption: t(`ch5.video${index}.caption`) }))} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <div class="skydive-grid"><ResponsiveImage media={media['ch5.photo4.media']} alt={t('ch5.photo4.alt')} caption={t('ch5.photo4.caption')} lightbox /><ResponsiveImage media={media['ch5.photo5.media']} alt={t('ch5.photo5.alt')} caption={t('ch5.photo5.caption')} lightbox /></div>
+    <p class="mono-caption">{t('ch5.paracaidas.label')}</p><blockquote>{t('ch5.s4.text')}</blockquote>
+    <ResponsiveImage media={media['ch5.photo6.media']} alt={t('ch5.photo6.alt')} caption={t('ch5.s5.text')} lightbox />
+  </section>
+
+  <section class="chapter people" id="ch6" data-chapter="6" aria-labelledby="ch6-title">
+    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">07 / 10</p><h2 id="ch6-title">{t('ch6.s1.title')}</h2></div><p>{t('ch6.s4.text')}</p></div>
+    <div class="people-grid"><LazyVideo media={media['ch6.video1.media']} alt={t('ch6.video1.alt')} caption={t('ch6.video1.caption')} /><LazyVideo media={media['ch6.video2.media']} alt={t('ch6.video2.alt')} caption={t('ch6.video2.caption')} /><ResponsiveImage media={media['ch6.photo3.media']} alt={t('ch6.photo3.alt')} caption={t('ch6.s3.text')} lightbox /></div>
+    <p class="people-note">{t('ch6.s2.text')}</p>
+  </section>
+
+  <section class="chapter now paper-chapter" id="ch7" data-chapter="7" aria-labelledby="ch7-title">
+    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">08 / 10</p><h2 id="ch7-title">{t('ch7.s1.title')}</h2></div><p>{t('ch7.s2.title')}</p></div>
+    <div class="movie-posters">{[1, 2, 3, 4].map((index) => <div class="movie-poster"><span>0{index}</span><strong>{t(`ch7.poster${index}.title`)}</strong></div>)}</div>
+    <div class="food-card"><p class="eyebrow">{t('ch7.s4.title')}</p><p>{t('ch7.s4.text')}</p></div>
+    <p class="coffee-line">{t('ch7.s3.text')}</p><p class="brazil-line">{t('ch7.s5.text')}</p>
+  </section>
+
+  <section class="chapter future" id="ch8" data-chapter="8" aria-labelledby="ch8-title">
+    <div class="chapter-intro"><p class="chapter-kicker">09 / 10</p><h2 id="ch8-title">{t('ch8.s1.title')}</h2></div>
+    <div class="future-list">{[2, 3, 4, 5].map((index) => <p><span>0{index - 1}</span>{t(`ch8.s${index}.text`)}</p>)}</div>
+    <div class="future-images"><ResponsiveImage media={media['ch8.photo1.media']} alt={t('ch8.photo1.alt')} caption={t('ch8.photo1.caption')} /><ResponsiveImage media={media['ch8.photo2.media']} alt={t('ch8.photo2.alt')} caption={t('ch8.photo2.caption')} /></div>
+  </section>
+
+  <section class="chapter closing" id="ch9" data-chapter="9" aria-labelledby="ch9-title">
+    <p class="chapter-kicker closing-kicker">10 / 10</p>
+    <ResponsiveImage media={media['ch9.photo1.media']} alt={t('ch9.photo1.alt')} />
+    <div class="closing-copy"><h2 id="ch9-title">{t('ch9.s1.text')}</h2><p>{t('ch9.s2.text')}</p></div>
+  </section>
+</main>
+
+<footer class="page-footer"><span aria-label={t('ui.footer_copyright')}>© {t('ui.footer_copyright')}</span><span class="footer-languages">{t('ui.footer_languages')}</span><small class="page-note">{t('ch9.note')}</small></footer>
+<Lightbox closeLabel={t('ui.close_media')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} />
+<script src={withBase('/scripts/chrome.js')} defer></script>

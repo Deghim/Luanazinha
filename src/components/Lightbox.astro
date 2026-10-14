@@ -1,0 +1,13 @@
+---
+interface Props { closeLabel: string; previousLabel: string; nextLabel: string }
+const { closeLabel, previousLabel, nextLabel } = Astro.props;
+---
+<dialog class="lightbox" id="media-lightbox" aria-labelledby="lightbox-caption">
+  <button type="button" class="lightbox-close" data-lightbox-close aria-label={closeLabel}>×</button>
+  <button type="button" class="lightbox-nav lightbox-prev" data-lightbox-prev aria-label={previousLabel}>←</button>
+  <figure>
+    <img data-lightbox-image src="" alt="" />
+    <figcaption id="lightbox-caption" data-lightbox-caption></figcaption>
+  </figure>
+  <button type="button" class="lightbox-nav lightbox-next" data-lightbox-next aria-label={nextLabel}>→</button>
+</dialog>

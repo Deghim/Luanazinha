@@ -1,0 +1,27 @@
+{
+  "name": "luanazinha",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "dev": "pnpm parse-content && pnpm build-media --skip-media && astro dev",
+    "parse-content": "node scripts/parse-content.mjs",
+    "build-media": "node scripts/build-media.mjs",
+    "build": "pnpm parse-content && pnpm build-media && astro build && node scripts/build-report.mjs",
+    "build:skip-media": "pnpm parse-content && pnpm build-media --skip-media && astro build && node scripts/build-report.mjs",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "check": "astro check && tsc --noEmit"
+  },
+  "dependencies": {
+    "@astrojs/check": "latest",
+    "@fontsource-variable/geist": "latest",
+    "@fontsource-variable/geist-mono": "latest",
+    "@fontsource/instrument-serif": "latest",
+    "astro": "latest",
+    "sharp": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

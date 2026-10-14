@@ -1,2 +1,9 @@
 # Luanazinha
-A brief description of me, for you to know me
+
+Static multilingual Astro site.
+
+## Build
+
+```sh
+pnpm build:skip-media
+```

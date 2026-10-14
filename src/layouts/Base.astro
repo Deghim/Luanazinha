@@ -1,0 +1,49 @@
+---
+import '../styles/base.css';
+import { absoluteUrl, siteBase, withBase } from '../lib/url';
+
+interface Props {
+  lang: 'en-US' | 'pt-BR' | 'zh-Hans';
+  locale: 'en' | 'pt' | 'zh';
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+const { lang, locale, title, description, ogImage = '/media/ch0-photo1-1200.avif' } = Astro.props;
+const path = `/${locale}/`;
+const canonical = absoluteUrl(path, Astro.site);
+const languages = [
+  { code: 'en', label: 'EN', href: '/en/' },
+  { code: 'pt', label: 'PT', href: '/pt/' },
+  { code: 'zh', label: '中文', href: '/zh/' }
+];
+---
+<!doctype html>
+<html lang={lang} data-site-base={siteBase}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#121110" />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    {locale !== 'zh' && <link rel="preload" href={withBase('/fonts/instrument-serif-latin-400-normal.woff2')} as="font" type="font/woff2" crossorigin />}
+    <link rel="canonical" href={canonical} />
+    {languages.map((item) => <link rel="alternate" hreflang={item.code === 'en' ? 'en' : item.code === 'pt' ? 'pt-BR' : 'zh-Hans'} href={absoluteUrl(item.href, Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={absoluteUrl('/', Astro.site)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={absoluteUrl(ogImage, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteUrl(ogImage, Astro.site)} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Saltar al contenido</a>
+    <slot />
+  </body>
+</html>

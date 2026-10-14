@@ -1,0 +1,23 @@
+---
+import ResponsiveImage from './ResponsiveImage.astro';
+import LazyVideo from './LazyVideo.astro';
+
+interface Item {
+  kind: 'image' | 'video';
+  media: any;
+  alt: string;
+  caption?: string;
+}
+interface Props { items: Item[]; label: string; previousLabel?: string; nextLabel?: string; className?: string }
+const { items, label, previousLabel = 'Previous', nextLabel = 'Next', className = '' } = Astro.props;
+---
+<div class:list={['media-strip-wrap', className]} data-media-strip>
+  <div class="media-strip" role="region" aria-label={label} tabindex="0">
+    {items.map((item) => item.kind === 'image' ? <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox /> : <LazyVideo media={item.media} alt={item.alt} caption={item.caption} />)}
+  </div>
+  <div class="strip-controls">
+    <button type="button" class="strip-arrow" data-strip-prev aria-label={previousLabel}>←</button>
+    <span class="strip-count" data-strip-count>1 — {items.length}</span>
+    <button type="button" class="strip-arrow" data-strip-next aria-label={nextLabel}>→</button>
+  </div>
+</div>
