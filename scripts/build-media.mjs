@@ -7,8 +7,8 @@ import sharp from 'sharp';
 
 const run = promisify(execFile);
 const root = process.cwd();
-const originals = process.env.MEDIA_SRC || '/Users/jchavira/Desktop/Luana/media-originales';
-const runOut = process.env.AGENT_OUT || '/Users/jchavira/Desktop/Luana/agent-runs/Luanazinha/out';
+const originals = process.env.MEDIA_SRC || path.join(root, '..', 'media-originales');
+const runOut = process.env.AGENT_OUT || path.join(root, '.build-out');
 const outDir = path.join(root, 'public/media');
 const dataDir = path.join(root, 'src/data');
 const reportPath = path.join(runOut, 'media-report.md');
@@ -17,7 +17,7 @@ const skip = process.argv.includes('--skip-media');
 const forceVideos = process.argv.includes('--force-videos');
 // E3c2 budget fallback: 2400 px extras are the first image variant to trim.
 // Protagonist sources still receive 2400 + 3200 below.
-const imageWidths = [480, 800, 1200, 1800];
+const imageWidths = [480, 800];
 const ffmpeg = process.env.FFMPEG || '/opt/homebrew/bin/ffmpeg';
 const ffprobe = process.env.FFPROBE || '/opt/homebrew/bin/ffprobe';
 const exiftool = process.env.EXIFTOOL || '/opt/homebrew/bin/exiftool';
@@ -25,6 +25,8 @@ const exiftool = process.env.EXIFTOOL || '/opt/homebrew/bin/exiftool';
 const contentSource = await fs.readFile(path.join(root, 'content-src/es-master.md'), 'utf8');
 const places = JSON.parse(await fs.readFile(path.join(runOut, 'places.json'), 'utf8'));
 const e1 = JSON.parse(await fs.readFile(path.join(runOut, 'selection-E1.json'), 'utf8'));
+const e5 = JSON.parse(await fs.readFile(path.join(runOut, 'selection-E5.json'), 'utf8'));
+const posterRoot = path.join(runOut, 'posters');
 const videoRows = (await fs.readFile(path.join(runOut, 'video-classification.jsonl'), 'utf8')).trim().split(/\r?\n/).map(JSON.parse);
 const videoByPath = new Map(videoRows.map((row) => [row.path, row]));
 
@@ -50,9 +52,10 @@ const introEntries = [
   ['intro.1', 'retratos/IMG_5044.jpeg', 'image', 'Entrada nocturna con Jorge junto al agua.', 'Chongqing', 'China'],
   ['intro.2', 'bungee/DJI_20251122151936_0047_D.MP4', 'video', 'Descenso de bungee frente a una pared rocosa.', null, 'Mexico'],
   ['intro.3', 'colima/IMG_3574.MOV', 'video', 'Cumbres y laderas rocosas desde una ruta de montaña.', 'Nevado de Colima', 'Mexico'],
-  ['intro.4', 'viajes-europa/IMG_8605.JPG', 'image', 'Salto en tándem visto desde el aire.', 'Puerto Vallarta', 'Mexico'],
-  ['intro.5', 'china/IMG_5603.MOV', 'video', 'Panorama de montañas y valles desde un punto elevado.', null, 'China'],
-  ['intro.6', 'china/IMG_2130.MOV', 'video', 'Edificios iluminados reflejados en un río nocturno.', null, 'China'],
+  ['intro.4', 'china/IMG_1771.MOV', 'video', 'Escena urbana nocturna con edificios y reflejos.', null, 'China'],
+  ['intro.5', 'corriendo/IMG_9915.MOV', 'video', 'Movimiento limpio de carrera en paisaje abierto.', 'Mexico', 'Mexico'],
+  ['intro.6', 'china/IMG_5770.MOV', 'video', 'Poblado iluminado de noche.', null, 'China'],
+  ['intro.7', 'china/IMG_2130.MOV', 'video', 'Edificios iluminados reflejados en un río nocturno.', null, 'China'],
 ];
 const introVideoSources = new Set(introEntries.filter((entry) => entry[2] === 'video').map((entry) => entry[1]));
 const carouselEntries = [
@@ -82,22 +85,80 @@ const interludeEntries = [
 ];
 const entryFromE1 = (key, item) => [key, normalizeSource(item.path), /\.(?:mp4|mov|m4v|mkv)$/i.test(item.path) ? 'video' : 'image', item.reason, item.place, item.country];
 const extras = [
-  ...e1.c_chapter_extras.ch1.map((x, i) => entryFromE1(`x.ch1.${i + 1}`, x)),
   ...e1.c_chapter_extras.ch2_musica.map((x, i) => entryFromE1(`x.ch2.${i + 1}`, x)),
-  ...e1.c_chapter_extras.ch3_china.map((x, i) => entryFromE1(`x.ch3.${i + 1}`, x)),
-  ...e1.c_chapter_extras.ch5_adrenalina.map((x, i) => entryFromE1(`x.ch5.${i + 1}`, x)),
-  ...e1.c_chapter_extras.ch6_los_mios.map((x, i) => entryFromE1(`x.ch6.${i + 1}`, x)),
   ...e1.c_chapter_extras.ch8_lo_que_sigue.map((x, i) => entryFromE1(`x.ch8.${i + 1}`, x)),
   ...e1.c_chapter_extras.lo_que_se_de_ti.map((x, i) => entryFromE1(`ella.${i + 1}`, x)),
 ];
-extras[extras.findIndex((item) => item[0] === 'x.ch5.1')] = ['x.ch5.1', 'viajes-europa/IMG_8582.JPG', 'image', 'La avioneta antes del salto, sin matrícula legible.', 'Puerto Vallarta', 'Mexico'];
+const spec = (key, source, kind, description, place = null, country = null, start_s = null, end_s = null, profile = 'standard') => ({ key, source, kind, description, place, country, start_s, end_s, profile });
+const e5Entries = [
+  spec('ch1.step2.media', 'otras cosas/1747b742-dad8-44c5-a3fd-81feb9c4387e.jpg', 'image', 'Grupo del hackathon.'),
+  spec('ch1.step3.media', 'tocando/Think of me once in a while.mov', 'video', 'Jorge estudia chelo.', null, null, 3, 7),
+  ...['CB2C6C1B-B456-4171-ABAF-CF96D724B2A6.mp4','IMG_4175.MOV','IMG_9909.MOV','IMG_9910.MOV','IMG_0033.MOV','IMG_6859.MOV','IMG_6183.MOV'].map((source, i) => spec(`ch1.collage.${String(i + 1).padStart(2, '0')}.media`, ['mascotas/','mascotas/','corriendo/','corriendo/','tocando/','tocando/','china/'][i] + source, 'video', 'Elemento de collage personal.', null, null, [1,1,0,.433,3,3,3][i], [5,5,3.433,4.433,7,7,7][i])),
+  spec('ch1.collage.08.media', 'china/IMG_1818.jpeg', 'image', 'Calle urbana nocturna.', 'Chongqing', 'China'),
+  spec('ch1.collage.09.media', 'china/IMG_5296.jpeg', 'image', 'Formaciones rocosas y plaza.', 'Zhangjiajie', 'China'),
+  spec('ch1.collage.10.media', 'china/IMG_5359.jpeg', 'image', 'Mirador y montañas.', 'Zhangjiajie', 'China'),
+  spec('ch1.collage.11.media', 'china/IMG_7983.jpeg', 'image', 'Valle visto desde altura.'),
+  spec('ch1.collage.12.media', 'china/IMG_6434.jpeg', 'image', 'Panda en un recinto.', 'Wuhan', 'China'),
+  ...[
+    ['china/IMG_2291.jpeg','image','Panorama nocturno junto al agua.','Chongqing','China'],
+    ['china/IMG_8622.MOV','video','Calle nocturna con luces.','Wuhan','China',2,6],
+    ['china/IMG_5274.jpeg','image','Persona ante una pagoda.','Zhangjiajie','China'],
+    ['china/IMG_5584.MOV','video','Formaciones rocosas y mirador.','Zhangjiajie','China',2.337,6.337],
+    ['china/IMG_5667.MOV','video','Calle peatonal y canal.','Zhangjiajie','China',2,6],
+    ['china/IMG_7621.jpeg','image','Arquitectura tradicional.','Beijing','China'],
+    ['china/IMG_7706.MOV','video','Muralla recorrida a pie.','Beijing','China',3,7],
+    ['china/IMG_7017.MOV','video','Pabellón rojo tradicional.','Beijing','China',3,7],
+    ['china/IMG_7656.jpeg','image','Edificio junto al agua helada.','Beijing','China'],
+  ].map((x, i) => spec(`ch3.carousel.${String(i + 1).padStart(2, '0')}.media`, ...x)),
+  spec('ch5.video3.media', 'bungee/DJI_20251122151936_0047_D.MP4', 'video', 'Salto de bungee frente al cañón.', 'Zhangjiajie', 'China', 32.5, 36.5),
+  spec('ch5.video4.media', 'bungee/DJI_20251122152157_0059_D.MP4', 'video', 'Participante suspendido tras el salto.', 'Zhangjiajie', 'China', 0, 4),
+  spec('ch5.colima.01.media', 'colima/IMG_3432.jpeg', 'image', 'Campamento y preparación.', 'Nevado de Colima', 'Mexico'),
+  spec('ch5.colima.02.media', 'colima/IMG_3523.MOV', 'video', 'Sendero y roca.', 'Nevado de Colima', 'Mexico', 2, 6),
+  spec('ch5.colima.03.media', 'colima/IMG_3616.MOV', 'video', 'Camino estrecho sobre la ladera.', 'Nevado de Colima', 'Mexico', 3, 7),
+  spec('ch5.colima.04.media', 'colima/IMG_3567.MOV', 'video', 'Excursionistas sobre la cresta.', 'Nevado de Colima', 'Mexico', 3, 7),
+  spec('ch5.colima.05.media', 'colima/IMG_3443.jpeg', 'image', 'Interior de tienda.', 'Nevado de Colima', 'Mexico'),
+  ...[
+    ['otras cosas/18c95886-1971-40b1-8246-1872435f4901.jpg',null,null],
+    ['retratos/82f5ec9b-0fc4-49d9-a1d6-f967db081fcc.jpg',null,null],
+    ['retratos/IMG_4053.jpeg','Guangzhou','China'],
+    ['retratos/IMG_5078.jpeg','Chongqing','China'],
+    ['retratos/IMG_7616.jpeg',null,null],
+    ['retratos/IMG_5164.jpeg','Wuhan','China'],
+    ['retratos/IMG_5638.jpeg','Beijing','China'],
+    ['retratos/IMG_5578.jpeg','Beijing','China'],
+  ].map((x, i) => spec(`ch6.people.${String(i + 1).padStart(2, '0')}.media`, x[0], 'image', 'Fotografía de personas cercanas.', x[1], x[2])),
+  spec('ch6.home.01.media', 'mascotas/dji_mimo_20260916_173206_20260916173207_1789689961638_video.mp4', 'video', 'Perro acercándose a la cámara.', null, null, 1, 5),
+  spec('ch6.home.02.media', 'retratos/IMG_8135.jpeg', 'image', 'Persona descansando en casa.'),
+  spec('ch6.home.03.media', 'mascotas/IMG_1205.jpeg', 'image', 'Hurón sostenido en casa.'),
+  spec('ch6.home.04.media', 'mascotas/IMG_1505.jpeg', 'image', 'Gato sobre las piernas.'),
+  spec('ch6.home.05.media', 'mascotas/dji_mimo_20260916_090952_20260916090953_1789689959374_photo.jpg', 'image', 'Hurón caminando en casa.'),
+  spec('ch6.home.06.media', 'mascotas/IMG_6406.MOV', 'video', 'Un hurón en el suelo.', null, null, 1, 5),
+  spec('ch6.home.07.media', 'mascotas/IMG_4188.jpeg', 'image', 'Una mano acaricia a un hurón.'),
+  ...[
+    ['viajes-europa/IMG_0194.MOV',2,6],['viajes-europa/IMG_0296.MOV',3,7],['viajes-europa/IMG_8672.MOV',2,6],
+    ['viajes-europa/IMG_2184.jpeg'],['viajes-europa/IMG_3275.jpeg'],['viajes-europa/IMG_8743.jpeg'],['china/IMG_7210.jpeg'],['viajes-europa/IMG_8790.jpeg']
+  ].map((x, i) => spec(`ch8.next.${String(i + 1).padStart(2, '0')}.media`, x[0], /\.(?:mp4|mov|m4v|mkv)$/i.test(x[0]) ? 'video' : 'image', 'Elemento de viaje y futuro.', null, null, x[1] ?? null, x[2] ?? null)),
+  ...[
+    ['poster.1.media','incantation-2022.jpg'],['poster.2.media','loco-mexico-magico.jpg'],['poster.3.media','los-insolitos-peces-gato-2013.jpg'],['poster.4.media','tropic-thunder-2008.jpg']
+  ].map(([key, file]) => spec(key, `posters/${file}`, 'image', 'Póster de película.')),
+].map((entry) => ({ ...entry, source: normalizeSource(entry.source) }));
 function cleanPlace(value) { return !value || /sin coincidencia|sin gps|^Europa$/i.test(String(value)) ? null : String(value); }
 function cleanCountry(value) { return !value || /desconocido/i.test(String(value)) ? null : String(value); }
 function fromTuple([key, source, kind, description, place, country]) {
   return { key, source, kind, description, place: cleanPlace(place), country: cleanCountry(country), fidelity: key.startsWith('intro.') || key.startsWith('arc.') || key === 'ch9.photo1.media' || key === 'ch0.photo1.media' };
 }
 const newEntries = [...introEntries, ...carouselEntries, ...interludeEntries.map(([key, item, description]) => [key, normalizeSource(item.path), 'video', description, cleanPlace(item.place), cleanCountry(item.country)]), ...extras].map(fromTuple);
-const allEntries = [...contentRefs.map((entry) => ({ ...entry, description: null, place: null, country: null })), ...newEntries];
+const usedContentKeys = new Set([
+  'ch1.photo1.media', 'ch1.video2.media', 'ch1.photo3.media',
+  'ch2.video1.media', 'ch2.video2.media', 'ch2.video3.media',
+  'ch3.video1.media', 'ch3.video2.media',
+  'ch5.video1.media', 'ch5.video2.media', 'ch5.video3.media', 'ch5.photo4.media', 'ch5.photo5.media', 'ch5.photo6.media',
+  'ch6.video1.media', 'ch6.video2.media', 'ch6.photo3.media',
+  'ch8.photo1.media', 'ch8.photo2.media', 'ch9.photo1.media',
+]);
+const contentEntries = contentRefs.filter((entry) => usedContentKeys.has(entry.key)).map((entry) => ({ ...entry, description: null, place: null, country: null }));
+const allEntries = [...new Map([...contentEntries, ...newEntries, ...e5Entries].map((entry) => [entry.key, entry])).values()];
+const clipOverrides = new Map(e5Entries.filter((entry) => entry.start_s != null).map((entry) => [entry.key, { start_s: entry.start_s, end_s: entry.end_s }]));
 const fidelityBySource = new Set(allEntries.filter((entry) => entry.fidelity).map((entry) => entry.source));
 const heroWebpBySource = new Set(allEntries.filter((entry) => entry.key === 'intro.1').map((entry) => entry.source));
 const premiumVideoBySource = new Set(allEntries.filter((entry) => entry.key.startsWith('intro.') || entry.key.startsWith('arc.') || entry.key.startsWith('int.')).map((entry) => entry.source));
@@ -143,6 +204,7 @@ function captionFor(entry, locale) {
 }
 function loopFor(source) { const row = videoByPath.get(source); return row?.loopable_clip || { start_s: 0, end_s: Math.min(4, row?.duration_s || 4) }; }
 function selectedLoopFor(entry) {
+  if (clipOverrides.has(entry.key)) return clipOverrides.get(entry.key);
   const interlude = interludeEntries.find(([key]) => key === entry.key)?.[1];
   if (interlude?.start_s != null) return { start_s: interlude.start_s, end_s: interlude.end_s };
   return loopFor(entry.source);
@@ -163,7 +225,7 @@ function scaleFilter(longSide) { return `scale='if(gte(iw,ih),${longSide},-2)':'
 function even(value) { return Math.max(2, Math.floor(value / 2) * 2); }
 async function encodeVideo(input, output, longSide, start, duration, profile = 'standard') {
   const crf = profile === 'premium' ? 21 : 23;
-  await run(ffmpeg, ['-y', '-ss', String(start), '-i', input, '-t', String(duration), '-map', '0:v:0', '-an', '-map_metadata', '-1', '-metadata', 'creation_time=', '-metadata', 'date=', '-vf', scaleFilter(longSide), '-c:v', 'libx264', '-profile:v', 'high', '-preset', 'medium', '-crf', String(crf), '-pix_fmt', 'yuv420p', '-color_range', 'tv', '-g', '24', '-keyint_min', '24', '-sc_threshold', '0', '-bf', '2', '-flags', '+cgop', '-movflags', '+faststart', '-force_key_frames', 'expr:gte(t,n_forced*1)', output]);
+  await run(ffmpeg, ['-y', '-ss', String(start), '-i', input, '-t', String(duration), '-map', '0:v:0', '-an', '-map_metadata', '-1', '-metadata', 'creation_time=', '-metadata', 'date=', '-vf', scaleFilter(longSide), '-c:v', 'libx264', '-profile:v', 'high', '-preset', 'slow', '-crf', String(crf), '-pix_fmt', 'yuv420p', '-color_range', 'tv', '-g', '24', '-keyint_min', '24', '-sc_threshold', '0', '-bf', '2', '-flags', '+cgop', '-movflags', '+faststart', '-force_key_frames', 'expr:gte(t,n_forced*1)', output]);
   return { size: await fileSize(output), crf };
 }
 
@@ -171,14 +233,15 @@ async function writeImage(input, base, entry) {
   const orientedMeta = await sharp(input).rotate().metadata();
   const width = orientedMeta.width ?? 1;
   const height = orientedMeta.height ?? 1;
-  const availableWidths = fidelityBySource.has(entry.source) ? [...imageWidths, 3200] : imageWidths;
-  const scaleWidths = availableWidths.filter((value) => value <= width);
+  const isPoster = entry.key.startsWith('poster.');
+  const availableWidths = isPoster ? [480, 800] : (fidelityBySource.has(entry.source) ? [...imageWidths, 3200] : imageWidths);
+  const scaleWidths = isPoster ? availableWidths : availableWidths.filter((value) => value <= width);
   if (!scaleWidths.length) scaleWidths.push(width);
   const avif = [], webp = [];
   for (const renditionWidth of scaleWidths) {
     const avifName = `${base}-${renditionWidth}.avif`;
-    const image = sharp(input).rotate().resize({ width: renditionWidth, withoutEnlargement: true });
-    const quality = fidelityBySource.has(entry.source) ? { avif: 78, chromaSubsampling: '4:4:4' } : { avif: 55, chromaSubsampling: '4:2:0' };
+    const image = sharp(input).rotate().resize({ width: renditionWidth, withoutEnlargement: !isPoster });
+    const quality = fidelityBySource.has(entry.source) ? { avif: 78, chromaSubsampling: '4:4:4' } : { avif: isPoster ? 60 : 50, chromaSubsampling: '4:2:0' };
     await image.clone().avif({ quality: quality.avif, effort: 6, chromaSubsampling: quality.chromaSubsampling }).toFile(path.join(outDir, avifName));
     avif.push({ w: renditionWidth, src: publicUrl(avifName) });
     if (heroWebpBySource.has(entry.source)) {
@@ -196,10 +259,10 @@ async function writeVideo(input, base, entry) {
   const clip = selectedLoopFor(entry);
   const start = Math.max(0, Number(clip.start_s || 0));
   const duration = Math.min(Math.max(0.5, Number(clip.end_s || start + 4) - start), Math.max(0.5, probe.duration - start));
-  const profile = premiumVideoBySource.has(entry.source) ? 'premium' : 'standard';
+  const profile = entry.profile || (premiumVideoBySource.has(entry.source) ? 'premium' : 'standard');
   const introHorizontal = entry.key.startsWith('intro.') && probe.width >= probe.height;
-  const desktopLong = Math.min(introHorizontal ? 1600 : 1920, Math.max(probe.width, probe.height));
-  const mobileLong = Math.min(1280, Math.max(probe.width, probe.height));
+  const desktopLong = profile === 'premium' ? Math.min(introHorizontal ? 1600 : 1920, Math.max(probe.width, probe.height)) : Math.min(1120, Math.max(probe.width, probe.height));
+  const mobileLong = profile === 'premium' ? Math.min(1280, Math.max(probe.width, probe.height)) : Math.min(840, Math.max(probe.width, probe.height));
   const desktop = { w: probe.width >= probe.height ? desktopLong : even(probe.width * desktopLong / probe.height), h: probe.height >= probe.width ? desktopLong : even(probe.height * desktopLong / probe.width) };
   const mobile = { w: probe.width >= probe.height ? mobileLong : even(probe.width * mobileLong / probe.height), h: probe.height >= probe.width ? mobileLong : even(probe.height * mobileLong / probe.width) };
   const paths = { desktopMp4: path.join(outDir, `${base}-desktop.mp4`), mobileMp4: path.join(outDir, `${base}-mobile.mp4`), desktopPoster: path.join(outDir, `${base}-poster.avif`), mobilePoster: path.join(outDir, `${base}-poster.avif`) };
@@ -246,21 +309,23 @@ const recordsBySource = new Map();
 const uniqueBytes = new Map();
 const keyBytes = [];
 for (const entry of allEntries) {
-  const input = path.join(originals, entry.source);
+  const input = entry.source.startsWith('posters/') ? path.join(posterRoot, path.basename(entry.source)) : path.join(originals, entry.source);
   if (!(await exists(input))) throw new Error(`Media no encontrada: ${input}`);
-  let record = recordsBySource.get(entry.source);
+  const clip = entry.kind === 'video' ? selectedLoopFor(entry) : null;
+  const recordId = `${entry.source}|${entry.kind}|${clip ? `${clip.start_s}-${clip.end_s}-${entry.profile || ''}` : ''}`;
+  let record = recordsBySource.get(recordId);
   if (!record) {
     const base = slug(entry.key);
     const common = { source: entry.source, signature: await signature(input) };
     record = /\.(?:mp4|mov|m4v|mkv)$/i.test(entry.source) ? { ...common, ...(await writeVideo(input, base, entry)) } : { ...common, ...(await writeImage(input, base, entry)) };
-    recordsBySource.set(entry.source, record);
+    recordsBySource.set(recordId, record);
     for (const output of outputsFor(record)) uniqueBytes.set(output, await fileSize(path.join(root, 'public', output.slice(1))));
   }
   media[entry.key] = clone(record);
-  if (newEntries.some((item) => item.key === entry.key)) metadata[entry.key] = { place: entry.place, country: entry.country, alt_es: localizedAlt(entry, 'es'), alt_en: localizedAlt(entry, 'en'), alt_pt: localizedAlt(entry, 'pt'), alt_zh: localizedAlt(entry, 'zh'), caption_es: captionFor(entry, 'es'), caption_en: captionFor(entry, 'en'), caption_pt: captionFor(entry, 'pt'), caption_zh: captionFor(entry, 'zh') };
+  if (newEntries.some((item) => item.key === entry.key) || e5Entries.some((item) => item.key === entry.key)) metadata[entry.key] = { place: entry.place, country: entry.country, alt_es: localizedAlt(entry, 'es'), alt_en: localizedAlt(entry, 'en'), alt_pt: localizedAlt(entry, 'pt'), alt_zh: localizedAlt(entry, 'zh'), caption_es: captionFor(entry, 'es'), caption_en: captionFor(entry, 'en'), caption_pt: captionFor(entry, 'pt'), caption_zh: captionFor(entry, 'zh') };
   let bytes = 0;
   for (const output of outputsFor(record)) bytes += uniqueBytes.get(output) || 0;
-  keyBytes.push({ key: entry.key, source: entry.source, bytes, shared: recordsBySource.get(entry.source) !== record });
+  keyBytes.push({ key: entry.key, source: entry.source, bytes, shared: recordsBySource.get(recordId) !== record });
   await fs.writeFile(path.join(dataDir, 'media.json'), `${JSON.stringify(media, null, 2)}\n`);
   await fs.writeFile(metaPath, `${JSON.stringify(metadata, null, 2)}\n`);
   console.log(`build-media: ${entry.key} -> ${record.type}`);
@@ -268,7 +333,7 @@ for (const entry of allEntries) {
 await validateFiles(media, allEntries.map((entry) => entry.key));
 const totalBytes = [...uniqueBytes.values()].reduce((sum, value) => sum + value, 0);
 const maxFile = Math.max(...uniqueBytes.values());
-const imageBytes = [...recordsBySource.entries()].filter(([source]) => !/\.(?:mp4|mov|m4v|mkv)$/i.test(source)).flatMap(([, record]) => outputsFor(record).map((output) => uniqueBytes.get(output) || 0)).reduce((sum, value) => sum + value, 0);
+const imageBytes = [...recordsBySource.entries()].filter(([source]) => !/\.(?:mp4|mov|m4v|mkv)(?:\||$)/i.test(source)).flatMap(([, record]) => outputsFor(record).map((output) => uniqueBytes.get(output) || 0)).reduce((sum, value) => sum + value, 0);
 const videoBytes = totalBytes - imageBytes;
 const videoChecks = [];
 for (const [source, record] of recordsBySource.entries()) {
@@ -290,7 +355,7 @@ const mediaFiles = [...uniqueBytes.entries()];
 const imageAssetBytes = mediaFiles.filter(([file]) => /\.(?:avif|webp)$/i.test(file)).reduce((sum, [, bytes]) => sum + bytes, 0);
 const videoAssetBytes = mediaFiles.filter(([file]) => /\.mp4$/i.test(file)).reduce((sum, [, bytes]) => sum + bytes, 0);
 const otherAssetBytes = totalBytes - imageAssetBytes - videoAssetBytes;
-const report = ['# Informe de medios', '', `Generado: ${new Date().toISOString()}`, '', 'La selección final excluye `viajes-europa/IMG_8581.JPG` por la matrícula; usa `IMG_8605.JPG`/`IMG_8582.JPG` para Puerto Vallarta. Las claves nuevas se procesan además de las referencias que el sitio actual todavía consume.', '', '| Clave | Fuente | Peso de variantes | Nota |', '|---|---|---:|---|', ...keyBytes.map((row) => `| \`${row.key}\` | \`${row.source}\` | ${(row.bytes / 1024 / 1024).toFixed(2)} MB | ${row.shared ? 'comparte salidas' : 'salidas propias'} |`), '', '## Totales', '', `- Fuentes únicas: ${recordsBySource.size}`, `- Imágenes (AVIF/WebP y posters): ${(imageAssetBytes / 1024 / 1024).toFixed(2)} MB`, `- Vídeo (MP4 H.264): ${(videoAssetBytes / 1024 / 1024).toFixed(2)} MB`, `- Otros: ${(otherAssetBytes / 1024 / 1024).toFixed(2)} MB`, `- Dist total (\`public/media\`): ${(totalBytes / 1024 / 1024).toFixed(2)} MB`, `- Archivo más pesado: ${(maxFile / 1024 / 1024).toFixed(2)} MB`, '- Límite solicitado: 200 MB', `- Estado de presupuesto: ${totalBytes <= 200 * 1024 * 1024 && maxFile <= 25 * 1024 * 1024 ? 'OK' : 'REVISAR'}`, '', '## Variantes de vídeo', '', 'Cada clip tiene solo MP4 H.264 High, yuv420p, faststart y sin audio para `(min-width: 900px)` y `(max-width: 899px)`. La variante desktop usa lado largo 1920 (1600 para intro horizontal); la variante móvil usa lado largo 1280. Intro, interludios y carrusel usan CRF 21; el resto CRF 23.', '', '## Decisión de calidad', '', 'Las imágenes usan AVIF-only en 480/800/1200/1800/2400 px; hero, carrusel y cierre añaden 3200 px. Solo el hero `intro.1` conserva WebP como fallback. AVIF usa calidad alta en material protagonista y calidad equilibrada en extras, sin degradar vídeos móviles a 480 px.', ''];
+const report = ['# Informe de medios', '', `Generado: ${new Date().toISOString()}`, '', 'La selección final excluye `viajes-europa/IMG_8581.JPG` por la matrícula; usa `IMG_8605.JPG`/`IMG_8582.JPG` para Puerto Vallarta. El pipeline procesa solo claves renderizadas y la selección E5.', '', '| Clave | Fuente | Peso de variantes | Nota |', '|---|---|---:|---|', ...keyBytes.map((row) => `| \`${row.key}\` | \`${row.source}\` | ${(row.bytes / 1024 / 1024).toFixed(2)} MB | ${row.shared ? 'comparte salidas' : 'salidas propias'} |`), '', '## Totales', '', `- Fuentes únicas: ${recordsBySource.size}`, `- Imágenes (AVIF/WebP y posters): ${(imageAssetBytes / 1024 / 1024).toFixed(2)} MB`, `- Vídeo (MP4 H.264): ${(videoAssetBytes / 1024 / 1024).toFixed(2)} MB`, `- Otros: ${(otherAssetBytes / 1024 / 1024).toFixed(2)} MB`, `- Dist total (\`public/media\`): ${(totalBytes / 1024 / 1024).toFixed(2)} MB`, `- Archivo más pesado: ${(maxFile / 1024 / 1024).toFixed(2)} MB`, '- Límite solicitado: 260 MB', `- Estado de presupuesto: ${totalBytes <= 260 * 1024 * 1024 ? 'OK' : 'REVISAR'}`, '', '## Variantes de vídeo', '', 'Cada clip tiene solo MP4 H.264 High, yuv420p, faststart y sin audio para `(min-width: 900px)` y `(max-width: 899px)`. Intro, interludios y Archivo usan lado largo premium 1920/1280; collage y strip usan 1120/840. Premium usa CRF 21 y estándar CRF 23.', '', '## Decisión de calidad', '', 'Las imágenes usan AVIF-only en 480/800/1200 px para extras; hero, carrusel y cierre añaden 1800/3200 px. Solo el hero `intro.1` conserva WebP como fallback. Posters incluyen 480/800 px.', ''];
 const qualityLine = report.findIndex((line) => line.startsWith('Las imágenes usan AVIF-only'));
 if (qualityLine >= 0) report[qualityLine] = 'Las imágenes usan AVIF-only en 480/800/1200/1800 px para extras y añaden 2400/3200 px en hero, carrusel y cierre. Solo el hero `intro.1` conserva WebP como fallback. AVIF usa calidad alta en material protagonista y calidad equilibrada en extras, sin degradar vídeos móviles a 480 px.';
 report.push('', '## GOP y keyframes', '', 'Todos los segmentos se recodifican con `-ss`/`-t`, sin `-c copy`, primer frame keyframe y keyframes forzados aproximadamente cada 1 s. H.264 usa GOP cerrado (`-g 24 -keyint_min 24 -sc_threshold 0 -bf 2`).', '', '| Fuente | Variante | Peso | Primer frame |', '|---|---|---:|---|', ...videoChecks.flatMap((row) => row.checked.map((item) => `| \`${row.source}\` | ${item.label} | ${(item.bytes / 1024 / 1024).toFixed(2)} MB | keyframe @ ${item.timestamp ?? '0'} s · OK |`)), '');

@@ -61,15 +61,22 @@ const interludeCaption = (key: string) => {
   const country = item[`country_${locale}`] ?? (item.country ? localizedCountry(item.country, locale) : '');
   return [place, country].filter(Boolean).join(' · ');
 };
-const dayMoments = ['ch1.s2.text', 'ch1.s3.text', 'ch1.s4.text', 'ch1.s5.text', 'ch1.s6.text'];
+const dayMoments = ['ch1.s2.text', 'ch1.s3.text', 'ch1.s4.text', 'ch1.s5.text', 'ch1.step5.text'];
+const dayFrames = [
+  { key: 'ch1.photo1.media', media: media['ch1.photo1.media'], alt: t('ch1.photo1.alt'), caption: t('ch1.photo1.caption') },
+  { key: 'ch1.step2.media', media: media['ch1.step2.media'], alt: t('ch1.step2.alt'), caption: t('ch1.step2.caption') },
+  { key: 'ch1.step3.media', media: media['ch1.step3.media'], alt: t('ch1.step3.alt'), caption: t('ch1.step3.caption') },
+  { key: 'ch1.video2.media', media: media['ch1.video2.media'], alt: t('ch1.video2.alt'), caption: t('ch1.video2.caption') },
+  { key: 'ch1.photo3.media', media: media['ch1.photo3.media'], alt: t('ch1.photo3.alt'), caption: t('ch1.photo3.caption') },
+];
+const collageItems = Array.from({ length: 12 }, (_, index) => {
+  const key = `ch1.collage.${String(index + 1).padStart(2, '0')}`;
+  return { key, media: media[`${key}.media`], alt: t(`${key}.alt`), caption: t(`${key}.caption`) };
+});
 const musicItems = [
   { kind: 'video' as const, media: media['ch2.video1.media'], alt: t('ch2.video1.alt'), caption: t('ch2.video1.caption') },
   { kind: 'video' as const, media: media['ch2.video2.media'], alt: t('ch2.video2.alt'), caption: t('ch2.video2.caption') },
   { kind: 'video' as const, media: media['ch2.video3.media'], alt: t('ch2.video3.alt'), caption: t('ch2.video3.caption') },
-];
-const chinaItems = [
-  { kind: 'image' as const, media: media['ch3.photo3.media'], alt: t('ch3.photo3.alt'), caption: t('ch3.photo3.caption') },
-  { kind: 'image' as const, media: media['ch3.photo4.media'], alt: t('ch3.photo4.alt'), caption: t('ch3.photo4.caption') },
 ];
 const extraItems = (prefix: string, count: number) => Array.from({ length: count }, (_, index) => {
   const key = `${prefix}.${index + 1}`;
@@ -79,22 +86,37 @@ const ellaItems = [1, 2, 3].map((index) => {
   const key = `ella.${index}`;
   return { key, media: media[key], alt: localizedMeta(key, 'alt'), caption: localizedMeta(key, 'caption') };
 });
-const chinaExtras = extraItems('x.ch3', 6);
 const archiveSlides = Array.from({ length: 13 }, (_, index) => {
   const key = `arc.${index + 1}`;
   const item = media[key];
   const detail = meta(key);
   return { key, media: item, place: detail[`place_${locale}`] ?? detail.place ?? detail[`caption_${locale}`] ?? 'China', country: detail.country === 'Mexico' ? (locale === 'zh' ? '墨西哥' : locale === 'pt' ? 'México' : locale === 'en' ? 'Mexico' : 'México') : (locale === 'zh' ? '中国' : locale === 'pt' ? 'China' : 'China'), alt: detail[`alt_${locale}`] ?? '', caption: detail[`caption_${locale}`] ?? '' };
 });
-const mexicoLabel = locale === 'zh' ? '墨西哥' : locale === 'pt' ? 'México' : locale === 'en' ? 'Mexico' : 'México';
 const compactChinaSlides = [
-  ...chinaItems.map((item, index) => ({ key: `ch3.${index + 3}`, media: item.media, place: item.caption ?? 'China', country: 'China', alt: item.alt, caption: item.caption })),
-  ...chinaExtras.map((item) => ({ key: item.key, media: item.media, place: item.caption || 'China', country: 'China', alt: item.alt, caption: item.caption })),
+  ...Array.from({ length: 9 }, (_, index) => {
+    const key = `ch3.carousel.${String(index + 1).padStart(2, '0')}`;
+    return { key, media: media[`${key}.media`], place: t(`${key}.caption`), country: '', alt: t(`${key}.alt`), caption: t(`${key}.caption`) };
+  }),
 ];
-const compactPeopleSlides = [
-  { key: 'ch6.photo3.media', media: media['ch6.photo3.media'], place: 'Casa', country: mexicoLabel, alt: t('ch6.photo3.alt'), caption: t('ch6.s3.text') },
-  ...extraItems('x.ch6', 4).map((item) => ({ key: item.key, media: item.media, place: item.caption || 'Casa', country: mexicoLabel, alt: item.alt, caption: item.caption })),
+const compactHomeSlides = Array.from({ length: 7 }, (_, index) => {
+  const key = `ch6.home.${String(index + 1).padStart(2, '0')}`;
+  return { key, media: media[`${key}.media`], place: t(`${key}.caption`), country: '', alt: t(`${key}.alt`), caption: t(`${key}.caption`) };
+});
+const peopleItems = Array.from({ length: 8 }, (_, index) => {
+  const key = `ch6.people.${String(index + 1).padStart(2, '0')}`;
+  return { key, media: media[`${key}.media`], alt: localizedMeta(`${key}.media`, 'alt'), caption: localizedMeta(`${key}.media`, 'caption') };
+});
+const colimaItems = [
+  { kind: 'image' as const, media: media['ch5.photo6.media'], alt: t('ch5.photo6.alt'), caption: t('ch5.photo6.caption') },
+  ...Array.from({ length: 5 }, (_, index) => {
+    const key = `ch5.colima.${String(index + 1).padStart(2, '0')}`;
+    return { kind: media[`${key}.media`].type, media: media[`${key}.media`], alt: t(`${key}.alt`), caption: t(`${key}.caption`) };
+  }),
 ];
+const futureItems = Array.from({ length: 8 }, (_, index) => {
+  const key = `ch8.next.${String(index + 1).padStart(2, '0')}`;
+  return { kind: media[`${key}.media`].type, media: media[`${key}.media`], alt: t(`${key}.alt`), caption: t(`${key}.caption`) };
+});
 ---
 
 <header class="site-chrome">
@@ -140,21 +162,19 @@ const compactPeopleSlides = [
       <div class="day-copy">
         <p class="eyebrow">{t('ui.aria.scroll_story')}</p>
         <ol class="day-moments">
-          {dayMoments.map((key, index) => <li data-moment={index} data-moment-frame={index < 3 ? 0 : index === 3 ? 1 : 2} class:list={{ 'is-active': index === 0 }}><span class="moment-index">0{index + 1} — 05</span><p>{t(key)}</p></li>)}
+          {dayMoments.map((key, index) => <li data-moment={index} data-moment-frame={index} class:list={{ 'is-active': index === 0 }}><span class="moment-index">0{index + 1} — 05</span><p>{t(key)}</p></li>)}
         </ol>
       </div>
       <div class="day-media" aria-label={t('ui.aria.media_strip')}>
-        <div class="day-frame is-active" data-day-frame="0"><ResponsiveImage media={media['ch1.photo1.media']} alt={t('ch1.photo1.alt')} caption={t('ch1.photo1.caption')} /></div>
-        <div class="day-frame" data-day-frame="1"><LazyVideo media={media['ch1.video2.media']} alt={t('ch1.video2.alt')} caption={t('ch1.video2.caption')} /></div>
-        <div class="day-frame" data-day-frame="2"><ResponsiveImage media={media['ch1.photo3.media']} alt={t('ch1.photo3.alt')} caption={t('ch1.photo3.caption')} /></div>
+        {dayFrames.map((item, index) => <div class:list={['day-frame', { 'is-active': index === 0 }]} data-day-frame={index}>{item.media.type === 'video' ? <LazyVideo media={item.media} alt={item.alt} caption={item.caption} /> : <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} />}</div>)}
       </div>
     </div>
     <div class="chapter-paper">
       <p class="eyebrow">{t('ch1.paper.label')}</p>
       <p>{t('ch1.s6.text')}</p>
     </div>
-    <div class="chapter-extra collage-extra" aria-label={t('ui.aria.media_strip')}>
-      {extraItems('x.ch1', 3).map((item, index) => <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox className={`extra-${index + 1}`} />)}
+    <div class="chapter-extra story-collage" aria-label={t('ui.aria.media_strip')}>
+      {collageItems.map((item, index) => <div class:list={['story-collage-item', `story-collage-item-${index + 1}`]} data-story-collage-item>{item.media.type === 'video' ? <LazyVideo media={item.media} alt={item.alt} caption={item.caption} lightbox /> : <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox />}</div>)}
     </div>
   </section>
 
@@ -182,7 +202,6 @@ const compactPeopleSlides = [
       <div><p class="chapter-kicker">{chapterStamp('ch3')}</p><h2 id="ch3-title">{t('ch3.s1.title')}</h2></div>
       <p>{t('ch3.s2.text')}</p>
     </div>
-    <div class="china-sheet"><MediaStrip items={[...chinaItems, ...chinaExtras]} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
     <CamilleCarousel slides={compactChinaSlides} title={t('ch3.s1.title')} previousLabel={t('ui.carousel_previous')} nextLabel={t('ui.carousel_next')} overviewLabel={t('ui.carousel_overview')} closeOverviewLabel={t('ui.carousel_close_overview')} slideLabel={t('ui.carousel_slide')} regionLabel={t('ch3.s1.title')} variant="compact" />
     <div class="train-band">
       <div class="train-copy"><p>{t('ch3.s3.text')}</p><p>{t('ch3.s4.text')}</p><p>{t('ch3.s5.text')}</p></div>
@@ -204,11 +223,11 @@ const compactPeopleSlides = [
 
   <section class="chapter adrenaline" id="ch5" data-chapter="5" aria-labelledby="ch5-title">
     <div class="chapter-intro split-intro"><div><p class="chapter-kicker">{chapterStamp('ch5')}</p><h2 id="ch5-title">{t('ch5.s1.title')}</h2></div><p>{t('ch5.s2.text')}</p></div>
-    <div class="bungee-strip"><MediaStrip items={[1, 2, 3].map((index) => ({ kind: 'video' as const, media: media[`ch5.video${index}.media`], alt: t(`ch5.video${index}.alt`), caption: t(`ch5.video${index}.caption`) }))} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <div class="bungee-strip"><MediaStrip items={[1, 2, 3, 4].map((index) => ({ kind: 'video' as const, media: media[`ch5.video${index}.media`], alt: t(`ch5.video${index}.alt`), caption: t(`ch5.video${index}.caption`) }))} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
     <div class="skydive-grid"><ResponsiveImage media={media['ch5.photo4.media']} alt={t('ch5.photo4.alt')} caption={t('ch5.photo4.caption')} lightbox /><ResponsiveImage media={media['ch5.photo5.media']} alt={t('ch5.photo5.alt')} caption={t('ch5.photo5.caption')} lightbox /></div>
     <p class="mono-caption">{t('ch5.paracaidas.label')}</p><blockquote>{t('ch5.s4.text')}</blockquote>
     <ResponsiveImage media={media['ch5.photo6.media']} alt={t('ch5.photo6.alt')} caption={t('ch5.s5.text')} lightbox />
-    <div class="chapter-extra extra-strip"><MediaStrip items={extraItems('x.ch5', 3)} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <div class="colima-gallery"><p class="eyebrow">{t('ch5.s5.text')}</p><MediaStrip items={colimaItems} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
   </section>
 
   <Interlude media={media['int.2']} alt={localizedMeta('int.2', 'alt')} caption={interludeCaption('int.2')} />
@@ -227,10 +246,10 @@ const compactPeopleSlides = [
   <section class="chapter people" id="ch6" data-chapter="6" aria-labelledby="ch6-title">
     <div class="chapter-intro split-intro"><div><p class="chapter-kicker">{chapterStamp('ch6')}</p><h2 id="ch6-title">{t('ch6.s1.title')}</h2></div><p>{t('ch6.s4.text')}</p></div>
     <div class="people-grid"><LazyVideo media={media['ch6.video1.media']} alt={t('ch6.video1.alt')} caption={t('ch6.video1.caption')} /><LazyVideo media={media['ch6.video2.media']} alt={t('ch6.video2.alt')} caption={t('ch6.video2.caption')} /><ResponsiveImage media={media['ch6.photo3.media']} alt={t('ch6.photo3.alt')} caption={t('ch6.s3.text')} lightbox /></div>
-    <div class="chapter-extra collage-extra people-extra" aria-label={t('ui.aria.media_strip')}>
-      {extraItems('x.ch6', 4).map((item, index) => <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox className={`extra-${index + 1}`} />)}
+    <div class="chapter-extra people-collage" aria-label={t('ui.aria.media_strip')}>
+      {peopleItems.map((item, index) => <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox className={`people-item-${index + 1}`} />)}
     </div>
-    <CamilleCarousel slides={compactPeopleSlides} title={t('ch6.s1.title')} previousLabel={t('ui.carousel_previous')} nextLabel={t('ui.carousel_next')} overviewLabel={t('ui.carousel_overview')} closeOverviewLabel={t('ui.carousel_close_overview')} slideLabel={t('ui.carousel_slide')} regionLabel={t('ch6.s1.title')} variant="compact" />
+    <CamilleCarousel slides={compactHomeSlides} title={t('ch6.s1.title')} previousLabel={t('ui.carousel_previous')} nextLabel={t('ui.carousel_next')} overviewLabel={t('ui.carousel_overview')} closeOverviewLabel={t('ui.carousel_close_overview')} slideLabel={t('ui.carousel_slide')} regionLabel={t('ch6.s1.title')} variant="compact" />
     <p class="people-note">{t('ch6.s2.text')}</p>
   </section>
 
@@ -238,7 +257,7 @@ const compactPeopleSlides = [
 
   <section class="chapter now paper-chapter" id="ch7" data-chapter="7" aria-labelledby="ch7-title">
     <div class="chapter-intro split-intro"><div><p class="chapter-kicker">{chapterStamp('ch7')}</p><h2 id="ch7-title">{t('ch7.s1.title')}</h2></div><p>{t('ch7.s2.title')}</p></div>
-    <div class="movie-posters">{[1, 2, 3, 4].map((index) => <div class="movie-poster"><span>0{index}</span><strong>{t(`ch7.poster${index}.title`)}</strong></div>)}</div>
+    <div class="movie-posters">{[1, 2, 3, 4].map((index) => <div class="movie-poster"><span>0{index}</span><img src={withBase(media[`poster.${index}.media`].srcset.avif.find((item: any) => item.w === 800)?.src ?? media[`poster.${index}.media`].srcset.avif.at(-1)?.src)} alt={t(`ch7.poster${index}.alt`)} width={media[`poster.${index}.media`].w} height={media[`poster.${index}.media`].h} loading="lazy" decoding="async" /><strong>{t(`ch7.poster${index}.title`)}</strong></div>)}</div>
     <div class="food-card"><p class="eyebrow">{t('ch7.s4.title')}</p><p>{t('ch7.s4.text')}</p></div>
     <p class="coffee-line">{t('ch7.s3.text')}</p><p class="brazil-line">{t('ch7.s5.text')}</p>
   </section>
@@ -250,6 +269,9 @@ const compactPeopleSlides = [
     <div class="future-list">{[2, 3, 4, 5].map((index) => <p><span>0{index - 1}</span>{t(`ch8.s${index}.text`)}</p>)}</div>
     <div class="future-images"><ResponsiveImage media={media['ch8.photo1.media']} alt={t('ch8.photo1.alt')} caption={t('ch8.photo1.caption')} /><ResponsiveImage media={media['ch8.photo2.media']} alt={t('ch8.photo2.alt')} caption={t('ch8.photo2.caption')} /></div>
     <div class="chapter-extra extra-strip future-extra"><MediaStrip items={extraItems('x.ch8', 2)} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <div class="future-collage" aria-label={t('ui.aria.media_strip')}>
+      {futureItems.map((item, index) => item.kind === 'video' ? <LazyVideo media={item.media} alt={item.alt} caption={item.caption} className={`future-item-${index + 1}`} /> : <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox className={`future-item-${index + 1}`} />)}
+    </div>
   </section>
 
   <Interlude media={media['int.8']} alt={localizedMeta('int.8', 'alt')} caption={interludeCaption('int.8')} />

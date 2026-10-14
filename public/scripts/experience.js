@@ -100,6 +100,10 @@
     let overviewFocus = null;
     let index = 0;
     let touchStart = 0;
+    let wheelDistance = 0;
+    let dragStart = null;
+    let dragLast = 0;
+    let dragVelocity = 0;
     const closeOverview = (restoreFocus = true) => {
       if (!overview || overview.hidden) return;
       overview.hidden = true;
@@ -147,6 +151,36 @@
     });
     carousel.addEventListener('touchstart', (event) => { touchStart = event.changedTouches[0].clientX; }, { passive: true });
     carousel.addEventListener('touchend', (event) => { const delta = event.changedTouches[0].clientX - touchStart; if (Math.abs(delta) > 45) change(index + (delta < 0 ? 1 : -1)); }, { passive: true });
+    carousel.addEventListener('wheel', (event) => {
+      const horizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY) || event.shiftKey;
+      if (!horizontal) return;
+      event.preventDefault();
+      wheelDistance += event.shiftKey && !event.deltaX ? event.deltaY : event.deltaX;
+      if (Math.abs(wheelDistance) < 36) return;
+      change(index + (wheelDistance > 0 ? 1 : -1));
+      wheelDistance = 0;
+    }, { passive: false });
+    stage?.addEventListener('pointerdown', (event) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      dragStart = event.clientX;
+      dragLast = event.clientX;
+      dragVelocity = 0;
+      stage.setPointerCapture?.(event.pointerId);
+    });
+    stage?.addEventListener('pointermove', (event) => {
+      if (dragStart == null) return;
+      dragVelocity = event.clientX - dragLast;
+      dragLast = event.clientX;
+    });
+    const finishDrag = () => {
+      if (dragStart == null) return;
+      const delta = dragLast - dragStart;
+      if (Math.abs(delta) > 42 || Math.abs(dragVelocity) > 18) change(index + (delta < 0 || dragVelocity < 0 ? 1 : -1));
+      dragStart = null;
+      dragVelocity = 0;
+    };
+    stage?.addEventListener('pointerup', finishDrag);
+    stage?.addEventListener('pointercancel', finishDrag);
     overviewButton?.addEventListener('click', openOverview);
     overviewClose?.addEventListener('click', () => closeOverview());
     stage?.addEventListener('pointermove', (event) => {
@@ -164,6 +198,17 @@
     track?.addEventListener('pointerup', () => { dragging = false; if (canMove) track.scrollBy({ left: -velocity * 8, behavior: 'smooth' }); });
     track?.addEventListener('pointercancel', () => { dragging = false; });
     change(0);
+  });
+
+  document.querySelectorAll('[data-story-collage-item]').forEach((item) => {
+    const video = item.querySelector('video');
+    if (!video) return;
+    item.addEventListener('pointerenter', () => { if (canMove) video.play().catch(() => {}); });
+    item.addEventListener('pointerleave', () => { if (!item.matches(':focus-within')) video.pause(); });
+    item.addEventListener('pointerup', (event) => {
+      if (event.pointerType !== 'touch') return;
+      if (video.paused) video.play().catch(() => {}); else video.pause();
+    });
   });
 
   document.querySelectorAll('[data-interlude]').forEach((interlude) => {

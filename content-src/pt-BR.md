@@ -82,9 +82,9 @@ ui.aria.media_strip: "Galeria de fotos e vídeos"
 
 `ch1.s1.title` — **Um dia normal**
 
-`ch1.s2.text` — **Ao acordar: treinar. Corrida, natação, academia ou bike. O cardápio muda; a decisão costuma vir antes da vontade.**
+`ch1.s2.text` — **Primeira coisa: treino. Corrida, natação, academia ou bike. Sou meio David Goggins... só digo.**
 
-`ch1.s3.text` — **Depois: trabalhar. Faço sites, gosto de IoT e fiquei em terceiro lugar num hackathon com um semáforo inteligente usando IA. Um BMO com Raspberry Pi continua nos planos.**
+`ch1.s3.text` — **Depois: trabalho. Construo sites, gosto de IoT e fiquei em terceiro num hackathon. Infelizmente (ou felizmente), gosto de coisas nerds. Uma regra inegociável: não trabalho fora do horário de expediente.**
 
 `ch1.s4.text` — **Depois: estudar. Vou às aulas e toco violoncelo quando dá. Às vezes caem no mesmo horário.**
 
@@ -94,17 +94,17 @@ ui.aria.media_strip: "Galeria de fotos e vídeos"
 
 ### Mídia
 
-`ch1.photo1.media` — `media-originales/corriendo/IMG_2662.jpeg`  
-`ch1.photo1.caption` — **O dia começa em movimento.**  
-`ch1.photo1.alt` — **Jorge corre por uma trilha cercada de vegetação e paisagem aberta.**
+`ch1.photo1.media` — `media-originales/corriendo/dji_mimo_20260827_194206_20260827194206_1788114025614_video.mp4`  
+`ch1.photo1.caption` — **Bike, sem aquecimento narrativo.**  
+`ch1.photo1.alt` — **Vídeo em primeira pessoa de Jorge andando de bicicleta.**
 
 `ch1.video2.media` — `media-originales/corriendo/IMG_9913.MOV`  
-`ch1.video2.caption` — **Treino em primeira pessoa.**  
+`ch1.video2.caption` — **Correndo, sem atalho.**  
 `ch1.video2.alt` — **Vídeo em primeira pessoa de uma corrida por uma trilha arborizada.**
 
-`ch1.photo3.media` — `media-originales/mascotas/IMG_4058.jpeg`  
-`ch1.photo3.caption` — **Uma parte da rotina.**  
-`ch1.photo3.alt` — **Close de um furão de pelagem clara.**
+`ch1.photo3.media` — `media-originales/mascotas/a394d8bb-b203-4fe0-ae05-c5f5f98f8ff1.jpg`  
+`ch1.photo3.caption` — **A gerência, em repouso.**  
+`ch1.photo3.alt` — **Um furão aparece de uma rede em casa.**
 
 ---
 
@@ -223,16 +223,16 @@ ui.aria.media_strip: "Galeria de fotos e vídeos"
 ### Mídia
 
 `ch5.video1.media` — `media-originales/bungee/42b9307970527fcfa55069fe4ac99440.mp4`  
-`ch5.video1.caption` — **Primeiro ângulo do salto.**  
+`ch5.video1.caption` — **Wuhan. Outro salto, a mesma relutância.**  
 `ch5.video1.alt` — **Vídeo vertical de um salto de bungee com a corda, um parque e água ao fundo.**
 
 `ch5.video2.media` — `media-originales/bungee/DJI_20251122151936_0047_D.MP4`  
 `ch5.video2.caption` — **A descida inteira.**  
 `ch5.video2.alt` — **Vídeo lateral de um salto de bungee diante de uma parede rochosa.**
 
-`ch5.video3.media` — `media-originales/bungee/GX011892.MP4`  
-`ch5.video3.caption` — **Vista ampla da ponte.**  
-`ch5.video3.alt` — **Plano aberto de uma ponte de onde alguém faz um salto de bungee.**
+`ch5.video3.media` — `media-originales/bungee/DJI_20251122151936_0047_D.MP4`  
+`ch5.video3.caption` — **Zhangjiajie. O primeiro segundo.**  
+`ch5.video3.alt` — **Vídeo lateral de Jorge deixando a plataforma de bungee.**
 
 `ch5.photo4.media` — `media-originales/viajes-europa/IMG_8605.JPG`  
 `ch5.photo4.caption` — **Salto duplo em Puerto Vallarta.**  
@@ -397,11 +397,157 @@ Não há botão, CTA ou texto depois disso.
 
 `ella.item3` — **Você escreve em português; eu respondo com o dicionário aberto. Suspeito que estou em desvantagem.**
 
-`ella.q.intro` — **Três perguntas, sem pressa.**
+`ella.q.intro` — **Três perguntas.**
 
 `ella.q1` — **Como você acabou falando chinês?**
 
 `ella.q2` — **Que lugar do Brasil eu deveria conhecer primeiro?**
 
 `ella.q3` — **O que mais faz você rir?**
+
+## E5b — Mídias selecionadas
+
+`ch1.step2.media` — `media-originales/otras cosas/1747b742-dad8-44c5-a3fd-81feb9c4387e.jpg`
+`ch1.step2.caption` — **A equipe do hackathon.**
+`ch1.step2.alt` — **Equipe reunida durante um hackathon.**
+`ch1.step3.media` — `media-originales/tocando/Think of me once in a while.mov`
+`ch1.step3.caption` — **Cello, sem plateia.**
+`ch1.step3.alt` — **Jorge estuda cello em um quarto.**
+`ch1.step5.text` — **Última parada: em casa, onde dois furões esperam. Minha agenda não importa pra eles.**
+
+`ch1.collage.01.media` — `media-originales/mascotas/CB2C6C1B-B456-4171-ABAF-CF96D724B2A6.mp4`
+`ch1.collage.01.caption` — **O furão passou sem avisar.**
+`ch1.collage.01.alt` — **Vídeo de um furão atravessando o chão de um quarto.**
+`ch1.collage.02.media` — `media-originales/mascotas/IMG_4175.MOV`
+`ch1.collage.02.caption` — **Perto de alguém.**
+`ch1.collage.02.alt` — **Vídeo de um furão na cama ao lado de uma pessoa.**
+`ch1.collage.03.media` — `media-originales/corriendo/IMG_9909.MOV`
+`ch1.collage.03.caption` — **Treinando.**
+`ch1.collage.03.alt` — **Vídeo em primeira pessoa de uma corrida na floresta.**
+`ch1.collage.04.media` — `media-originales/corriendo/IMG_9910.MOV`
+`ch1.collage.04.caption` — **Outra trilha.**
+`ch1.collage.04.alt` — **Vídeo em primeira pessoa de uma corrida por trilha de terra.**
+`ch1.collage.05.media` — `media-originales/tocando/IMG_0033.MOV`
+`ch1.collage.05.caption` — **Guitarra, sem plateia.**
+`ch1.collage.05.alt` — **Vídeo de Jorge tocando violão.**
+`ch1.collage.06.media` — `media-originales/tocando/IMG_6859.MOV`
+`ch1.collage.06.caption` — **Piano, sem cerimônia.**
+`ch1.collage.06.alt` — **Vídeo de mãos tocando teclas sob uma luminária.**
+`ch1.collage.07.media` — `media-originales/china/IMG_6183.MOV`
+`ch1.collage.07.caption` — **Água parada.**
+`ch1.collage.07.alt` — **Vídeo de um lago e seus reflexos.**
+`ch1.collage.08.media` — `media-originales/china/IMG_1818.jpeg`
+`ch1.collage.08.caption` — **Chongqing à noite.**
+`ch1.collage.08.alt` — **Rua urbana iluminada em Chongqing à noite.**
+`ch1.collage.09.media` — `media-originales/china/IMG_5296.jpeg`
+`ch1.collage.09.caption` — **Zhangjiajie, de passagem.**
+`ch1.collage.09.alt` — **Formações rochosas e uma praça em Zhangjiajie.**
+`ch1.collage.10.media` — `media-originales/china/IMG_5359.jpeg`
+`ch1.collage.10.caption` — **Uma pausa em Zhangjiajie.**
+`ch1.collage.10.alt` — **Mirante com montanhas em Zhangjiajie.**
+`ch1.collage.11.media` — `media-originales/china/IMG_7983.jpeg`
+`ch1.collage.11.caption` — **Vale visto de cima.**
+`ch1.collage.11.alt` — **Vale visto de um ponto alto.**
+`ch1.collage.12.media` — `media-originales/china/IMG_6434.jpeg`
+`ch1.collage.12.caption` — **Um panda, por acaso.**
+`ch1.collage.12.alt` — **Panda em um recinto de Wuhan.**
+
+`ch3.carousel.01.media` — `media-originales/china/IMG_2291.jpeg`
+`ch3.carousel.01.caption` — **Chongqing**
+`ch3.carousel.01.alt` — **Panorama noturno de Chongqing junto à água.**
+`ch3.carousel.02.media` — `media-originales/china/IMG_8622.MOV`
+`ch3.carousel.02.caption` — **Wuhan**
+`ch3.carousel.02.alt` — **Rua noturna de Wuhan com luzes e letreiros.**
+`ch3.carousel.03.media` — `media-originales/china/IMG_5274.jpeg`
+`ch3.carousel.03.caption` — **Zhangjiajie**
+`ch3.carousel.03.alt` — **Pessoa diante de um pagode entre montanhas de Zhangjiajie.**
+`ch3.carousel.04.media` — `media-originales/china/IMG_5584.MOV`
+`ch3.carousel.04.caption` — **Zhangjiajie**
+`ch3.carousel.04.alt` — **Formações rochosas e mirante em Zhangjiajie.**
+`ch3.carousel.05.media` — `media-originales/china/IMG_5667.MOV`
+`ch3.carousel.05.caption` — **Zhangjiajie**
+`ch3.carousel.05.alt` — **Rua de pedestres e canal em Zhangjiajie.**
+`ch3.carousel.06.media` — `media-originales/china/IMG_7621.jpeg`
+`ch3.carousel.06.caption` — **Pequim**
+`ch3.carousel.06.alt` — **Arquitetura tradicional em Pequim.**
+`ch3.carousel.07.media` — `media-originales/china/IMG_7706.MOV`
+`ch3.carousel.07.caption` — **Pequim**
+`ch3.carousel.07.alt` — **Muralha e pátio histórico percorridos a pé em Pequim.**
+`ch3.carousel.08.media` — `media-originales/china/IMG_7017.MOV`
+`ch3.carousel.08.caption` — **Pequim**
+`ch3.carousel.08.alt` — **Pavilhão vermelho tradicional em Pequim.**
+`ch3.carousel.09.media` — `media-originales/china/IMG_7656.jpeg`
+`ch3.carousel.09.caption` — **Pequim**
+`ch3.carousel.09.alt` — **Edifício tradicional junto à água congelada em Pequim.**
+
+`ch5.video4.media` — `media-originales/bungee/DJI_20251122152157_0059_D.MP4`
+`ch5.video4.caption` — **Zhangjiajie. Pendurado ali.**
+`ch5.video4.alt` — **Vídeo de Jorge suspenso depois de um salto em Zhangjiajie.**
+`ch5.colima.01.media` — `media-originales/colima/IMG_3432.jpeg`
+`ch5.colima.01.caption` — **Acampamento.**
+`ch5.colima.01.alt` — **Acampamento antes de subir o Nevado de Colima.**
+`ch5.colima.02.media` — `media-originales/colima/IMG_3523.MOV`
+`ch5.colima.02.caption` — **Trilha.**
+`ch5.colima.02.alt` — **Trilha rochosa no Nevado de Colima.**
+`ch5.colima.03.media` — `media-originales/colima/IMG_3616.MOV`
+`ch5.colima.03.caption` — **Crista.**
+`ch5.colima.03.alt` — **Caminho estreito na encosta do Nevado de Colima.**
+`ch5.colima.04.media` — `media-originales/colima/IMG_3567.MOV`
+`ch5.colima.04.caption` — **Crista, com companhia.**
+`ch5.colima.04.alt` — **Excursionistas em uma crista do Nevado de Colima.**
+`ch5.colima.05.media` — `media-originales/colima/IMG_3443.jpeg`
+`ch5.colima.05.caption` — **Barraca.**
+`ch5.colima.05.alt` — **Interior de uma barraca durante a subida do Nevado de Colima.**
+
+`ch6.home.01.media` — `media-originales/mascotas/dji_mimo_20260916_173206_20260916173207_1789689961638_video.mp4`
+`ch6.home.01.caption` — **Casa**
+`ch6.home.01.alt` — **Vídeo de um cachorro se aproximando da câmera em casa.**
+`ch6.home.02.media` — `media-originales/retratos/IMG_8135.jpeg`
+`ch6.home.02.caption` — **Turno da tarde**
+`ch6.home.02.alt` — **Pessoa descansando em casa.**
+`ch6.home.03.media` — `media-originales/mascotas/IMG_1205.jpeg`
+`ch6.home.03.caption` — **Em boas mãos**
+`ch6.home.03.alt` — **Furão segurado por uma mão diante da gaiola.**
+`ch6.home.04.media` — `media-originales/mascotas/IMG_1505.jpeg`
+`ch6.home.04.caption` — **O gato decidiu**
+`ch6.home.04.alt` — **Gato apoiado nas pernas de alguém em um sofá.**
+`ch6.home.05.media` — `media-originales/mascotas/dji_mimo_20260916_090952_20260916090953_1789689959374_photo.jpg`
+`ch6.home.05.caption` — **Travessia doméstica**
+`ch6.home.05.alt` — **Furão andando pelo chão de um quarto.**
+`ch6.home.06.media` — `media-originales/mascotas/IMG_6406.MOV`
+`ch6.home.06.caption` — **Supervisão**
+`ch6.home.06.alt` — **Vídeo de um furão no chão recebendo carinho.**
+`ch6.home.07.media` — `media-originales/mascotas/IMG_4188.jpeg`
+`ch6.home.07.caption` — **Outra gerência**
+`ch6.home.07.alt` — **Pessoa fazendo carinho em um furão pequeno na grama.**
+
+`ch7.poster1.alt` — **Pôster de Incantation.**
+`ch7.poster2.alt` — **Pôster de Loco México Mágico.**
+`ch7.poster3.alt` — **Pôster de Los insólitos peces gato.**
+`ch7.poster4.alt` — **Pôster de Tropic Thunder.**
+
+`ch8.next.01.media` — `media-originales/viajes-europa/IMG_0194.MOV`
+`ch8.next.01.caption` — **Outra cidade**
+`ch8.next.01.alt` — **Rio urbano ao entardecer.**
+`ch8.next.02.media` — `media-originales/viajes-europa/IMG_0296.MOV`
+`ch8.next.02.caption` — **Pedra e altura**
+`ch8.next.02.alt` — **Fortaleza de pedra em um penhasco.**
+`ch8.next.03.media` — `media-originales/viajes-europa/IMG_8672.MOV`
+`ch8.next.03.caption` — **Caminho aberto**
+`ch8.next.03.alt` — **Caminho arborizado.**
+`ch8.next.04.media` — `media-originales/viajes-europa/IMG_2184.jpeg`
+`ch8.next.04.caption` — **Guadalajara**
+`ch8.next.04.alt` — **Evento noturno com fumaça e luz em Guadalajara.**
+`ch8.next.05.media` — `media-originales/viajes-europa/IMG_3275.jpeg`
+`ch8.next.05.caption` — **Guadalajara**
+`ch8.next.05.alt` — **Peixes e cor em Guadalajara.**
+`ch8.next.06.media` — `media-originales/viajes-europa/IMG_8743.jpeg`
+`ch8.next.06.caption` — **Munique**
+`ch8.next.06.alt` — **Interior de uma catedral em Munique.**
+`ch8.next.07.media` — `media-originales/china/IMG_7210.jpeg`
+`ch8.next.07.caption` — **Pequim**
+`ch8.next.07.alt` — **Fila de esculturas de cavalos em Pequim.**
+`ch8.next.08.media` — `media-originales/viajes-europa/IMG_8790.jpeg`
+`ch8.next.08.caption` — **Munique**
+`ch8.next.08.alt` — **Pessoa diante de um edifício monumental em Munique.**
 

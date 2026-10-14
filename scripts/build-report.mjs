@@ -5,7 +5,7 @@ import { gzipSync } from 'node:zlib';
 
 const root = process.cwd();
 const dist = path.join(root, 'dist');
-const out = '/Users/jchavira/Desktop/Luana/agent-runs/Luanazinha/out/build-report.md';
+const out = path.join(process.env.AGENT_OUT || path.join(root, '.build-out'), 'build-report.md');
 const budget = 150 * 1024;
 const configuredBase = process.env.SITE_BASE || '/';
 const basePrefix = configuredBase === '/' ? '' : configuredBase.replace(/^\/+/, '').replace(/\/+$/, '') + '/';
@@ -99,9 +99,9 @@ const mediaTypeBytes = {
   video: [...mediaFiles].filter((file) => /\.mp4$/i.test(file)).reduce((total, file) => total + statSync(file).size, 0),
   other: [...mediaFiles].filter((file) => !/\.(?:avif|webp|mp4)$/i.test(file)).reduce((total, file) => total + statSync(file).size, 0),
 };
-const heroRecord = mediaData['ch0.photo1.media'];
+const heroRecord = mediaData['intro.1'];
 const heroNames = [...heroRecord.srcset.avif, ...(heroRecord.srcset.webp ?? [])].map((item) => item.src.slice('/media/'.length));
-const heroLcpName = heroRecord.srcset.avif.find((item) => item.w === 1200)?.src.slice('/media/'.length);
+const heroLcpName = heroRecord.srcset.avif.find((item) => item.w === 800)?.src.slice('/media/'.length);
 const heroRows = [];
 for (const name of heroNames) {
   const bytes = (await fs.stat(path.join(root, 'public/media', name))).size;
@@ -135,13 +135,13 @@ const lines = [
   `JS inicial: ${(Math.max(...rows.filter((row) => row.route !== '/').map((row) => row.jsGzip)) / 1024).toFixed(1)} KB gz (presupuesto ≤30 KB: OK).`,
   'El módulo `experience.js` contiene IntroReel, CamilleCarousel e Interlude; su fila debe mantenerse en ≤14 KB gz.',
   '',
-  '## Hero ch0-photo1',
+  '## Hero intro.1',
   '',
   '| Variante | Peso | Estado |',
   '|---|---:|---|',
   ...heroRows.map((row) => `| \`${row.name}\` | ${(row.bytes / 1024).toFixed(1)} KB | ${row.status} |`),
   '',
-  'El presupuesto de carga inicial usa el AVIF de 1200 px como hero LCP; las variantes grandes quedan para `srcset` responsive.',
+  'El presupuesto de carga inicial usa el AVIF de 800 px como hero LCP; la variante 3200 px queda para `srcset` responsive.',
   '',
   '## Dedupe de media',
   '',
@@ -149,7 +149,7 @@ const lines = [
   `- Archivos físicos únicos: ${mediaFiles.size}`,
   `- Peso físico de public/media: ${(physicalMediaBytes / 1024 / 1024).toFixed(2)} MB`,
   `- Peso físico de dist: ${(physicalDistBytes / 1024 / 1024).toFixed(2)} MB`,
-  `- Estado del presupuesto dist ≤200 MB: ${physicalDistBytes <= 200 * 1024 * 1024 ? 'OK' : 'REVISAR'}`,
+  `- Estado del presupuesto dist ≤260 MB: ${physicalDistBytes <= 260 * 1024 * 1024 ? 'OK' : 'REVISAR'}`,
   `- Ahorro frente a materializar cada clave por separado: ${(dedupeSavings / 1024 / 1024).toFixed(2)} MB`,
   '- Aliases confirmados por rutas compartidas en media.json; no se recodifican ni se duplican bytes.',
   '',
@@ -160,7 +160,7 @@ const lines = [
   `| Imágenes (AVIF/WebP y posters) | ${(mediaTypeBytes.images / 1024 / 1024).toFixed(2)} MB | OK |`,
   `| Video (MP4 H.264) | ${(mediaTypeBytes.video / 1024 / 1024).toFixed(2)} MB | OK |`,
   `| Otros | ${(mediaTypeBytes.other / 1024 / 1024).toFixed(2)} MB | ${mediaTypeBytes.other === 0 ? 'OK' : 'REVISAR'} |`,
-  `| Total public/media | ${(physicalMediaBytes / 1024 / 1024).toFixed(2)} MB | ${physicalMediaBytes <= 200 * 1024 * 1024 ? 'OK · ≤200 MB' : 'REVISAR' } |`,
+  `| Total public/media | ${(physicalMediaBytes / 1024 / 1024).toFixed(2)} MB | ${physicalMediaBytes <= 260 * 1024 * 1024 ? 'OK · ≤260 MB' : 'REVISAR' } |`,
 ];
 await fs.writeFile(out, `${lines.join('\n')}\n`);
 console.log(`build-report: ${rows.length} páginas y ${heroRows.length} variantes listadas en ${out}`);

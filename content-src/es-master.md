@@ -104,9 +104,9 @@ ui.aria.media_strip: "Tira de imágenes y videos"
 
 `ch1.s1.title` — **Un día normal** (3 palabras)
 
-`ch1.s2.text` — **Al despertar: entrenar. Correr, nadar, gimnasio o bici. El menú cambia; la decisión suele llegar antes que las ganas.** (19 palabras)
+`ch1.s2.text` — **Al despertar: entrenar. Correr, nadar, gimnasio o bici. Soy un poco David Goggins... solo digo.**
 
-`ch1.s3.text` — **Después: trabajar. Programo páginas web, me gusta el IoT y quedé tercero en un hackathon con un semáforo inteligente con IA. Un BMO con Raspberry Pi sigue en planes.** (29 palabras)
+`ch1.s3.text` — **Después: trabajar. Construyo páginas web, me gusta el IoT y quedé tercero en un hackathon. Por desgracia (o por suerte), me gustan las cosas nerd. Una regla no negociable: no trabajo fuera del horario de oficina.**
 
 `ch1.s4.text` — **Luego: estudiar. Voy a la escuela y estudio chelo cuando puedo. A veces las dos cosas coinciden.** (17 palabras)
 
@@ -116,17 +116,17 @@ ui.aria.media_strip: "Tira de imágenes y videos"
 
 ### Media
 
-`ch1.photo1.media` — `media-originales/corriendo/IMG_2662.jpeg`  
-`ch1.photo1.caption` — **El día empieza en movimiento.**  
-`ch1.photo1.alt` — **Jorge corre por un sendero con vegetación y paisaje abierto.**
+`ch1.photo1.media` — `media-originales/corriendo/dji_mimo_20260827_194206_20260827194206_1788114025614_video.mp4`  
+`ch1.photo1.caption` — **Bici, sin calentamiento narrativo.**  
+`ch1.photo1.alt` — **Video POV de Jorge en bicicleta por un camino.**
 
 `ch1.video2.media` — `media-originales/corriendo/IMG_9913.MOV`  
-`ch1.video2.caption` — **Video en primera persona del entrenamiento.**  
+`ch1.video2.caption` — **Corriendo, sin atajo.**  
 `ch1.video2.alt` — **Video en primera persona de una carrera por un sendero arbolado.**
 
-`ch1.photo3.media` — `media-originales/mascotas/IMG_4058.jpeg`  
-`ch1.photo3.caption` — **Una parte de la rutina.**  
-`ch1.photo3.alt` — **Retrato cercano de un hurón de pelaje claro.**
+`ch1.photo3.media` — `media-originales/mascotas/a394d8bb-b203-4fe0-ae05-c5f5f98f8ff1.jpg`  
+`ch1.photo3.caption` — **La gerencia, en reposo.**  
+`ch1.photo3.alt` — **Un hurón asoma desde una hamaca en casa.**
 
 ---
 
@@ -245,16 +245,16 @@ ui.aria.media_strip: "Tira de imágenes y videos"
 ### Media
 
 `ch5.video1.media` — `media-originales/bungee/42b9307970527fcfa55069fe4ac99440.mp4`  
-`ch5.video1.caption` — **Ángulo uno del salto.**  
+`ch5.video1.caption` — **Wuhan. Otro salto, la misma resistencia.**  
 `ch5.video1.alt` — **Video vertical de un salto de bungee con la cuerda, un parque y agua al fondo.**
 
 `ch5.video2.media` — `media-originales/bungee/DJI_20251122151936_0047_D.MP4`  
 `ch5.video2.caption` — **Descenso completo.**  
 `ch5.video2.alt` — **Video lateral de un salto de bungee frente a una pared rocosa.**
 
-`ch5.video3.media` — `media-originales/bungee/GX011892.MP4`  
-`ch5.video3.caption` — **Vista amplia del puente.**  
-`ch5.video3.alt` — **Video de plano amplio de un puente desde el que se realiza un salto de bungee.**
+`ch5.video3.media` — `media-originales/bungee/DJI_20251122151936_0047_D.MP4`  
+`ch5.video3.caption` — **Zhangjiajie. El primer segundo.**  
+`ch5.video3.alt` — **Video lateral del instante en que Jorge deja la plataforma de bungee.**
 
 `ch5.photo4.media` — `media-originales/viajes-europa/IMG_8605.JPG`  
 `ch5.photo4.caption` — **Salto en tándem en Puerto Vallarta.**  
@@ -435,10 +435,156 @@ No hay botón, CTA ni texto posterior.
 
 `ella.item3` — **Escribes en portugués; yo respondo con el diccionario abierto. Sospecho que llevo desventaja.**
 
-`ella.q.intro` — **Tres preguntas, sin prisa.**
+`ella.q.intro` — **Tres preguntas.**
 
 `ella.q1` — **¿Cómo terminaste hablando chino?**
 
 `ella.q2` — **¿Qué lugar de Brasil debería conocer primero?**
 
 `ella.q3` — **¿Qué es lo que más te hace reír?**
+
+## E5b — Medios seleccionados
+
+`ch1.step2.media` — `media-originales/otras cosas/1747b742-dad8-44c5-a3fd-81feb9c4387e.jpg`
+`ch1.step2.caption` — **El equipo del hackathon.**
+`ch1.step2.alt` — **Equipo reunido durante un hackathon.**
+`ch1.step3.media` — `media-originales/tocando/Think of me once in a while.mov`
+`ch1.step3.caption` — **Chelo, sin público.**
+`ch1.step3.alt` — **Jorge estudia chelo en una habitación.**
+`ch1.step5.text` — **Última parada: la casa, donde esperan dos hurones. Mi agenda les importa muy poco.**
+
+`ch1.collage.01.media` — `media-originales/mascotas/CB2C6C1B-B456-4171-ABAF-CF96D724B2A6.mp4`
+`ch1.collage.01.caption` — **El hurón cruzó sin avisar.**
+`ch1.collage.01.alt` — **Video de un hurón cruzando el piso de una habitación.**
+`ch1.collage.02.media` — `media-originales/mascotas/IMG_4175.MOV`
+`ch1.collage.02.caption` — **Cerca de alguien.**
+`ch1.collage.02.alt` — **Video de un hurón sobre una cama junto a una persona.**
+`ch1.collage.03.media` — `media-originales/corriendo/IMG_9909.MOV`
+`ch1.collage.03.caption` — **Entrenando.**
+`ch1.collage.03.alt` — **Video POV de una carrera por un bosque con otro corredor delante.**
+`ch1.collage.04.media` — `media-originales/corriendo/IMG_9910.MOV`
+`ch1.collage.04.caption` — **Otro sendero.**
+`ch1.collage.04.alt` — **Video POV de un corredor en un sendero de tierra.**
+`ch1.collage.05.media` — `media-originales/tocando/IMG_0033.MOV`
+`ch1.collage.05.caption` — **Guitarra, sin público.**
+`ch1.collage.05.alt` — **Video de Jorge tocando una guitarra acústica.**
+`ch1.collage.06.media` — `media-originales/tocando/IMG_6859.MOV`
+`ch1.collage.06.caption` — **Piano, poca ceremonia.**
+`ch1.collage.06.alt` — **Video de unas manos tocando teclas bajo una lámpara.**
+`ch1.collage.07.media` — `media-originales/china/IMG_6183.MOV`
+`ch1.collage.07.caption` — **Agua quieta.**
+`ch1.collage.07.alt` — **Video de un estanque y sus reflejos.**
+`ch1.collage.08.media` — `media-originales/china/IMG_1818.jpeg`
+`ch1.collage.08.caption` — **Chongqing, de noche.**
+`ch1.collage.08.alt` — **Calle urbana iluminada de noche en Chongqing.**
+`ch1.collage.09.media` — `media-originales/china/IMG_5296.jpeg`
+`ch1.collage.09.caption` — **Zhangjiajie, de paso.**
+`ch1.collage.09.alt` — **Formaciones rocosas y una plaza en Zhangjiajie.**
+`ch1.collage.10.media` — `media-originales/china/IMG_5359.jpeg`
+`ch1.collage.10.caption` — **Una pausa en Zhangjiajie.**
+`ch1.collage.10.alt` — **Mirador con montañas en Zhangjiajie.**
+`ch1.collage.11.media` — `media-originales/china/IMG_7983.jpeg`
+`ch1.collage.11.caption` — **Valle desde arriba.**
+`ch1.collage.11.alt` — **Valle visto desde un punto elevado.**
+`ch1.collage.12.media` — `media-originales/china/IMG_6434.jpeg`
+`ch1.collage.12.caption` — **Un panda, por sorpresa.**
+`ch1.collage.12.alt` — **Panda en un recinto de Wuhan.**
+
+`ch3.carousel.01.media` — `media-originales/china/IMG_2291.jpeg`
+`ch3.carousel.01.caption` — **Chongqing**
+`ch3.carousel.01.alt` — **Panorama nocturno de Chongqing junto al agua.**
+`ch3.carousel.02.media` — `media-originales/china/IMG_8622.MOV`
+`ch3.carousel.02.caption` — **Wuhan**
+`ch3.carousel.02.alt` — **Calle nocturna de Wuhan con luces y letreros.**
+`ch3.carousel.03.media` — `media-originales/china/IMG_5274.jpeg`
+`ch3.carousel.03.caption` — **Zhangjiajie**
+`ch3.carousel.03.alt` — **Persona ante una pagoda entre montañas de Zhangjiajie.**
+`ch3.carousel.04.media` — `media-originales/china/IMG_5584.MOV`
+`ch3.carousel.04.caption` — **Zhangjiajie**
+`ch3.carousel.04.alt` — **Formaciones rocosas y mirador en Zhangjiajie.**
+`ch3.carousel.05.media` — `media-originales/china/IMG_5667.MOV`
+`ch3.carousel.05.caption` — **Zhangjiajie**
+`ch3.carousel.05.alt` — **Calle peatonal y canal en Zhangjiajie.**
+`ch3.carousel.06.media` — `media-originales/china/IMG_7621.jpeg`
+`ch3.carousel.06.caption` — **Beijing**
+`ch3.carousel.06.alt` — **Arquitectura tradicional en Beijing.**
+`ch3.carousel.07.media` — `media-originales/china/IMG_7706.MOV`
+`ch3.carousel.07.caption` — **Beijing**
+`ch3.carousel.07.alt` — **Muralla y patio histórico recorridos a pie en Beijing.**
+`ch3.carousel.08.media` — `media-originales/china/IMG_7017.MOV`
+`ch3.carousel.08.caption` — **Beijing**
+`ch3.carousel.08.alt` — **Pabellón rojo tradicional en Beijing.**
+`ch3.carousel.09.media` — `media-originales/china/IMG_7656.jpeg`
+`ch3.carousel.09.caption` — **Beijing**
+`ch3.carousel.09.alt` — **Edificio tradicional junto al agua helada en Beijing.**
+
+`ch5.video4.media` — `media-originales/bungee/DJI_20251122152157_0059_D.MP4`
+`ch5.video4.caption` — **Zhangjiajie. Ahí colgado.**
+`ch5.video4.alt` — **Video de Jorge suspendido después de un salto en Zhangjiajie.**
+`ch5.colima.01.media` — `media-originales/colima/IMG_3432.jpeg`
+`ch5.colima.01.caption` — **Campamento.**
+`ch5.colima.01.alt` — **Campamento de preparación para subir el Nevado de Colima.**
+`ch5.colima.02.media` — `media-originales/colima/IMG_3523.MOV`
+`ch5.colima.02.caption` — **Sendero.**
+`ch5.colima.02.alt` — **Video de un sendero rocoso del Nevado de Colima.**
+`ch5.colima.03.media` — `media-originales/colima/IMG_3616.MOV`
+`ch5.colima.03.caption` — **Cresta.**
+`ch5.colima.03.alt` — **Video de un camino estrecho en la ladera del Nevado de Colima.**
+`ch5.colima.04.media` — `media-originales/colima/IMG_3567.MOV`
+`ch5.colima.04.caption` — **Cresta, con compañía.**
+`ch5.colima.04.alt` — **Video de excursionistas sobre una cresta del Nevado de Colima.**
+`ch5.colima.05.media` — `media-originales/colima/IMG_3443.jpeg`
+`ch5.colima.05.caption` — **Tienda.**
+`ch5.colima.05.alt` — **Interior de una tienda durante la subida al Nevado de Colima.**
+
+`ch6.home.01.media` — `media-originales/mascotas/dji_mimo_20260916_173206_20260916173207_1789689961638_video.mp4`
+`ch6.home.01.caption` — **Casa**
+`ch6.home.01.alt` — **Video de un perro acercándose a la cámara en casa.**
+`ch6.home.02.media` — `media-originales/retratos/IMG_8135.jpeg`
+`ch6.home.02.caption` — **Turno de la tarde**
+`ch6.home.02.alt` — **Persona descansando en casa.**
+`ch6.home.03.media` — `media-originales/mascotas/IMG_1205.jpeg`
+`ch6.home.03.caption` — **En buenas manos**
+`ch6.home.03.alt` — **Hurón sostenido en una mano frente a su jaula.**
+`ch6.home.04.media` — `media-originales/mascotas/IMG_1505.jpeg`
+`ch6.home.04.caption` — **El gato decidió**
+`ch6.home.04.alt` — **Gato apoyado sobre las piernas de una persona en un sofá.**
+`ch6.home.05.media` — `media-originales/mascotas/dji_mimo_20260916_090952_20260916090953_1789689959374_photo.jpg`
+`ch6.home.05.caption` — **Cruce doméstico**
+`ch6.home.05.alt` — **Hurón caminando por el piso de una habitación.**
+`ch6.home.06.media` — `media-originales/mascotas/IMG_6406.MOV`
+`ch6.home.06.caption` — **Supervisión**
+`ch6.home.06.alt` — **Video de un hurón en el suelo mientras una persona lo acaricia.**
+`ch6.home.07.media` — `media-originales/mascotas/IMG_4188.jpeg`
+`ch6.home.07.caption` — **Otra gerencia**
+`ch6.home.07.alt` — **Una persona acaricia a un hurón pequeño sobre el césped.**
+
+`ch7.poster1.alt` — **Póster de Incantation.**
+`ch7.poster2.alt` — **Póster de Loco México Mágico.**
+`ch7.poster3.alt` — **Póster de Los insólitos peces gato.**
+`ch7.poster4.alt` — **Póster de Tropic Thunder.**
+
+`ch8.next.01.media` — `media-originales/viajes-europa/IMG_0194.MOV`
+`ch8.next.01.caption` — **Otra ciudad**
+`ch8.next.01.alt` — **Video de un río urbano al atardecer.**
+`ch8.next.02.media` — `media-originales/viajes-europa/IMG_0296.MOV`
+`ch8.next.02.caption` — **Piedra y altura**
+`ch8.next.02.alt` — **Video de una fortaleza de piedra sobre un acantilado.**
+`ch8.next.03.media` — `media-originales/viajes-europa/IMG_8672.MOV`
+`ch8.next.03.caption` — **Camino abierto**
+`ch8.next.03.alt` — **Video de un camino arbolado.**
+`ch8.next.04.media` — `media-originales/viajes-europa/IMG_2184.jpeg`
+`ch8.next.04.caption` — **Guadalajara**
+`ch8.next.04.alt` — **Evento nocturno con humo y luz en Guadalajara.**
+`ch8.next.05.media` — `media-originales/viajes-europa/IMG_3275.jpeg`
+`ch8.next.05.caption` — **Guadalajara**
+`ch8.next.05.alt` — **Peces y color en Guadalajara.**
+`ch8.next.06.media` — `media-originales/viajes-europa/IMG_8743.jpeg`
+`ch8.next.06.caption` — **Munich**
+`ch8.next.06.alt` — **Interior de una catedral en Munich.**
+`ch8.next.07.media` — `media-originales/china/IMG_7210.jpeg`
+`ch8.next.07.caption` — **Beijing**
+`ch8.next.07.alt` — **Fila de esculturas de caballos en Beijing.**
+`ch8.next.08.media` — `media-originales/viajes-europa/IMG_8790.jpeg`
+`ch8.next.08.caption` — **Munich**
+`ch8.next.08.alt` — **Persona ante un edificio monumental en Munich.**

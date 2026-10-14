@@ -13,18 +13,24 @@ interface Props {
   alt: string;
   caption?: string;
   className?: string;
+  lightbox?: boolean;
 }
-const { media, alt, caption, className = '' } = Astro.props;
+const { media, alt, caption, className = '', lightbox = false } = Astro.props;
 const poster = withBase(media.poster);
 const desktop = media.sources?.desktop;
 const mobile = media.sources?.mobile;
 const mp4 = withBase(mobile?.mp4 ?? media.srcset.mp4);
 ---
 <figure class:list={['media-figure', 'video-figure', className]} style={`--media-ratio:${media.w} / ${media.h}`}>
-  <video class="lazy-video" data-lazy-video poster={poster} muted loop playsinline preload="none" aria-label={alt} width={media.w} height={media.h}>
+  {lightbox ? <button type="button" class="lightbox-trigger video-lightbox-trigger" data-lightbox-src={poster} data-lightbox-alt={alt} data-lightbox-caption={caption} aria-label={alt}>
+    <video class="lazy-video" data-lazy-video poster={poster} muted loop playsinline preload="none" aria-label={alt} width={media.w} height={media.h}>
+      {desktop && <source media="(min-width: 900px)" data-src={withBase(desktop.mp4)} type="video/mp4" />}
+      <source data-src={mp4} type="video/mp4" />
+    </video>
+  </button> : <video class="lazy-video" data-lazy-video poster={poster} muted loop playsinline preload="none" aria-label={alt} width={media.w} height={media.h}>
     {desktop && <source media="(min-width: 900px)" data-src={withBase(desktop.mp4)} type="video/mp4" />}
     <source data-src={mp4} type="video/mp4" />
-  </video>
+  </video>}
   <noscript><img src={poster} alt={alt} width={media.w} height={media.h} /></noscript>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>

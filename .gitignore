@@ -8,3 +8,4 @@ public/media/.cache/
 .DS_Store
 out/
 tools/
+.build-out/

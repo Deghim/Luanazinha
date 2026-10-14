@@ -9,7 +9,7 @@ interface Props {
 }
 const { media, copy, locale } = Astro.props;
 const text = (key: string) => copy[key] ?? key;
-const introKeys = ['intro.1', 'intro.2', 'intro.3', 'intro.4', 'intro.5', 'intro.6'];
+const introKeys = ['intro.1', 'intro.2', 'intro.3', 'intro.4', 'intro.5', 'intro.6', 'intro.7'];
 const isVideo = (record: any) => record?.type === 'video';
 const altKey = locale === 'en' ? 'alt_en' : locale === 'pt' ? 'alt_pt' : 'alt_zh';
 const meta = (key: string) => (mediaMeta as Record<string, any>)[key] ?? null;
@@ -24,7 +24,7 @@ const meta = (key: string) => (mediaMeta as Record<string, any>)[key] ?? null;
       const poster = withBase(record?.posters?.desktop ?? record?.poster ?? '');
       return <figure class:list={['intro-panel', `intro-panel-${index + 1}`, { 'is-mobile-layer': index < 3 }]} data-intro-panel={index}>
         {isVideo(record) ? (
-          <video class="intro-panel-media" data-intro-video muted loop playsinline preload="none" poster={poster} aria-label={alt}>
+        <video class="intro-panel-media" data-intro-video muted loop playsinline preload="none" poster={poster} aria-label={alt}>
             <source media="(min-width: 900px)" data-src={withBase(record.sources.desktop.mp4)} type="video/mp4" />
             <source data-src={withBase(record.sources.mobile.mp4)} type="video/mp4" />
           </video>

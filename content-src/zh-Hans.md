@@ -82,9 +82,9 @@ ui.aria.media_strip: "图片与视频列表"
 
 `ch1.s1.title` — **普通的一天**
 
-`ch1.s2.text` — **醒来之后：运动。跑步、游泳、健身房或骑车。项目会换，决定总是比干劲先到。**
+`ch1.s2.text` — **起床第一件事：训练。跑步、游泳、健身房或骑车。我有点像 David Goggins……随口一说。**
 
-`ch1.s3.text` — **然后：工作。做网站，喜欢物联网，还在一次黑客松里用 AI 做智能红绿灯拿了第三名。用树莓派做 BMO 还在计划中。**
+`ch1.s3.text` — **然后：工作。做网站，喜欢物联网，还在黑客松拿了第三名。不幸（或幸运）的是，我喜欢这些极客东西。有一条不能商量：下班时间不工作。**
 
 `ch1.s4.text` — **然后：学习。去上课，有空就练大提琴。有时两件事会撞在同一时间。**
 
@@ -94,17 +94,17 @@ ui.aria.media_strip: "图片与视频列表"
 
 ### 媒体
 
-`ch1.photo1.media` — `media-originales/corriendo/IMG_2662.jpeg`  
-`ch1.photo1.caption` — **一天从运动开始。**  
-`ch1.photo1.alt` — **Jorge 在植被茂盛、视野开阔的小路上跑步。**
+`ch1.photo1.media` — `media-originales/corriendo/dji_mimo_20260827_194206_20260827194206_1788114025614_video.mp4`  
+`ch1.photo1.caption` — **骑车，不必先写旁白。**  
+`ch1.photo1.alt` — **Jorge 骑车穿过小路的第一视角视频。**
 
 `ch1.video2.media` — `media-originales/corriendo/IMG_9913.MOV`  
-`ch1.video2.caption` — **第一视角的训练。**  
+`ch1.video2.caption` — **跑步，没有捷径。**  
 `ch1.video2.alt` — **第一视角拍摄的林间小路跑步视频。**
 
-`ch1.photo3.media` — `media-originales/mascotas/IMG_4058.jpeg`  
-`ch1.photo3.caption` — **日常的一部分。**  
-`ch1.photo3.alt` — **一只浅色毛发的雪貂近照。**
+`ch1.photo3.media` — `media-originales/mascotas/a394d8bb-b203-4fe0-ae05-c5f5f98f8ff1.jpg`  
+`ch1.photo3.caption` — **管理层，正在休息。**  
+`ch1.photo3.alt` — **一只雪貂从家里的吊床里探出头来。**
 
 ---
 
@@ -223,16 +223,16 @@ ui.aria.media_strip: "图片与视频列表"
 ### 媒体
 
 `ch5.video1.media` — `media-originales/bungee/42b9307970527fcfa55069fe4ac99440.mp4`  
-`ch5.video1.caption` — **第一个机位。**
+`ch5.video1.caption` — **武汉。又一次跳，一样不情愿。**
 `ch5.video1.alt` — **竖屏蹦极视频，画面中有绳子、公园和远处的水面。**
 
 `ch5.video2.media` — `media-originales/bungee/DJI_20251122151936_0047_D.MP4`  
 `ch5.video2.caption` — **完整的下降过程。**  
 `ch5.video2.alt` — **一面岩壁前蹦极的侧面视频。**
 
-`ch5.video3.media` — `media-originales/bungee/GX011892.MP4`  
-`ch5.video3.caption` — **桥的全景。**  
-`ch5.video3.alt` — **从远处拍摄的桥，有人在桥上蹦极。**
+`ch5.video3.media` — `media-originales/bungee/DJI_20251122151936_0047_D.MP4`  
+`ch5.video3.caption` — **张家界。最初的一秒。**  
+`ch5.video3.alt` — **Jorge 离开蹦极平台的侧面视频。**
 
 `ch5.photo4.media` — `media-originales/viajes-europa/IMG_8605.JPG`  
 `ch5.photo4.caption` — **巴亚尔塔港的双人跳伞。**
@@ -397,11 +397,157 @@ ui.aria.media_strip: "图片与视频列表"
 
 `ella.item3` — **你用葡萄牙语发消息，我翻着词典回。我怀疑自己吃亏了。**
 
-`ella.q.intro` — **三个问题，不急。**
+`ella.q.intro` — **三个问题。**
 
 `ella.q1` — **你是怎么学上中文的？**
 
 `ella.q2` — **去巴西的话，你觉得我该先去哪儿？**
 
 `ella.q3` — **什么最能逗你笑？**
+
+## E5b — 选定媒体
+
+`ch1.step2.media` — `media-originales/otras cosas/1747b742-dad8-44c5-a3fd-81feb9c4387e.jpg`
+`ch1.step2.caption` — **黑客松团队。**
+`ch1.step2.alt` — **黑客松期间聚在一起的团队。**
+`ch1.step3.media` — `media-originales/tocando/Think of me once in a while.mov`
+`ch1.step3.caption` — **大提琴，没有观众。**
+`ch1.step3.alt` — **Jorge 在房间里练习大提琴。**
+`ch1.step5.text` — **最后一站：回家，两只雪貂在等我。它们才不管我的日程。**
+
+`ch1.collage.01.media` — `media-originales/mascotas/CB2C6C1B-B456-4171-ABAF-CF96D724B2A6.mp4`
+`ch1.collage.01.caption` — **雪貂没有提前通知。**
+`ch1.collage.01.alt` — **一只雪貂穿过房间地板的视频。**
+`ch1.collage.02.media` — `media-originales/mascotas/IMG_4175.MOV`
+`ch1.collage.02.caption` — **靠近某个人。**
+`ch1.collage.02.alt` — **一只雪貂在床上靠着一个人的视频。**
+`ch1.collage.03.media` — `media-originales/corriendo/IMG_9909.MOV`
+`ch1.collage.03.caption` — **训练中。**
+`ch1.collage.03.alt` — **林间跑步的第一视角视频。**
+`ch1.collage.04.media` — `media-originales/corriendo/IMG_9910.MOV`
+`ch1.collage.04.caption` — **另一条小路。**
+`ch1.collage.04.alt` — **在土路上跑步的第一视角视频。**
+`ch1.collage.05.media` — `media-originales/tocando/IMG_0033.MOV`
+`ch1.collage.05.caption` — **吉他，没有观众。**
+`ch1.collage.05.alt` — **Jorge 弹木吉他的视频。**
+`ch1.collage.06.media` — `media-originales/tocando/IMG_6859.MOV`
+`ch1.collage.06.caption` — **钢琴，不讲仪式。**
+`ch1.collage.06.alt` — **灯下弹奏琴键的手部视频。**
+`ch1.collage.07.media` — `media-originales/china/IMG_6183.MOV`
+`ch1.collage.07.caption` — **静水。**
+`ch1.collage.07.alt` — **池塘和倒影的视频。**
+`ch1.collage.08.media` — `media-originales/china/IMG_1818.jpeg`
+`ch1.collage.08.caption` — **夜里的重庆。**
+`ch1.collage.08.alt` — **重庆夜间亮着灯的城市街道。**
+`ch1.collage.09.media` — `media-originales/china/IMG_5296.jpeg`
+`ch1.collage.09.caption` — **路过张家界。**
+`ch1.collage.09.alt` — **张家界的岩石地貌和广场。**
+`ch1.collage.10.media` — `media-originales/china/IMG_5359.jpeg`
+`ch1.collage.10.caption` — **张家界的一次停顿。**
+`ch1.collage.10.alt` — **张家界的观景台和山景。**
+`ch1.collage.11.media` — `media-originales/china/IMG_7983.jpeg`
+`ch1.collage.11.caption` — **从高处看的山谷。**
+`ch1.collage.11.alt` — **从高处看到的山谷。**
+`ch1.collage.12.media` — `media-originales/china/IMG_6434.jpeg`
+`ch1.collage.12.caption` — **一只意外出现的熊猫。**
+`ch1.collage.12.alt` — **武汉饲养区里的熊猫。**
+
+`ch3.carousel.01.media` — `media-originales/china/IMG_2291.jpeg`
+`ch3.carousel.01.caption` — **重庆**
+`ch3.carousel.01.alt` — **重庆水边的夜间城市全景。**
+`ch3.carousel.02.media` — `media-originales/china/IMG_8622.MOV`
+`ch3.carousel.02.caption` — **武汉**
+`ch3.carousel.02.alt` — **武汉夜间亮着灯和招牌的街道。**
+`ch3.carousel.03.media` — `media-originales/china/IMG_5274.jpeg`
+`ch3.carousel.03.caption` — **张家界**
+`ch3.carousel.03.alt` — **张家界山间 pagoda 前的人。**
+`ch3.carousel.04.media` — `media-originales/china/IMG_5584.MOV`
+`ch3.carousel.04.caption` — **张家界**
+`ch3.carousel.04.alt` — **张家界的岩石和观景台。**
+`ch3.carousel.05.media` — `media-originales/china/IMG_5667.MOV`
+`ch3.carousel.05.caption` — **张家界**
+`ch3.carousel.05.alt` — **张家界的步行街和水道。**
+`ch3.carousel.06.media` — `media-originales/china/IMG_7621.jpeg`
+`ch3.carousel.06.caption` — **北京**
+`ch3.carousel.06.alt` — **北京的传统建筑。**
+`ch3.carousel.07.media` — `media-originales/china/IMG_7706.MOV`
+`ch3.carousel.07.caption` — **北京**
+`ch3.carousel.07.alt` — **在北京步行经过的城墙和历史庭院。**
+`ch3.carousel.08.media` — `media-originales/china/IMG_7017.MOV`
+`ch3.carousel.08.caption` — **北京**
+`ch3.carousel.08.alt` — **北京的传统红色亭子。**
+`ch3.carousel.09.media` — `media-originales/china/IMG_7656.jpeg`
+`ch3.carousel.09.caption` — **北京**
+`ch3.carousel.09.alt` — **北京冰水旁的传统建筑。**
+
+`ch5.video4.media` — `media-originales/bungee/DJI_20251122152157_0059_D.MP4`
+`ch5.video4.caption` — **张家界。就这么挂着。**
+`ch5.video4.alt` — **Jorge 在张家界跳完后悬在空中的视频。**
+`ch5.colima.01.media` — `media-originales/colima/IMG_3432.jpeg`
+`ch5.colima.01.caption` — **营地。**
+`ch5.colima.01.alt` — **攀登科利马雪山前的营地。**
+`ch5.colima.02.media` — `media-originales/colima/IMG_3523.MOV`
+`ch5.colima.02.caption` — **小路。**
+`ch5.colima.02.alt` — **科利马雪山上的岩石小路。**
+`ch5.colima.03.media` — `media-originales/colima/IMG_3616.MOV`
+`ch5.colima.03.caption` — **山脊。**
+`ch5.colima.03.alt` — **科利马雪山坡上的窄路。**
+`ch5.colima.04.media` — `media-originales/colima/IMG_3567.MOV`
+`ch5.colima.04.caption` — **有人同行的山脊。**
+`ch5.colima.04.alt` — **科利马雪山山脊上的徒步者。**
+`ch5.colima.05.media` — `media-originales/colima/IMG_3443.jpeg`
+`ch5.colima.05.caption` — **帐篷。**
+`ch5.colima.05.alt` — **攀登科利马雪山时的帐篷内部。**
+
+`ch6.home.01.media` — `media-originales/mascotas/dji_mimo_20260916_173206_20260916173207_1789689961638_video.mp4`
+`ch6.home.01.caption` — **家**
+`ch6.home.01.alt` — **一只狗在家里走近镜头的视频。**
+`ch6.home.02.media` — `media-originales/retratos/IMG_8135.jpeg`
+`ch6.home.02.caption` — **下午班**
+`ch6.home.02.alt` — **有人在家里休息。**
+`ch6.home.03.media` — `media-originales/mascotas/IMG_1205.jpeg`
+`ch6.home.03.caption` — **掌中安全**
+`ch6.home.03.alt` — **一只雪貂被手托着，身后是笼子。**
+`ch6.home.04.media` — `media-originales/mascotas/IMG_1505.jpeg`
+`ch6.home.04.caption` — **猫说了算**
+`ch6.home.04.alt` — **一只猫靠在沙发上某人的腿上。**
+`ch6.home.05.media` — `media-originales/mascotas/dji_mimo_20260916_090952_20260916090953_1789689959374_photo.jpg`
+`ch6.home.05.caption` — **家中穿行**
+`ch6.home.05.alt` — **一只雪貂走过房间地板。**
+`ch6.home.06.media` — `media-originales/mascotas/IMG_6406.MOV`
+`ch6.home.06.caption` — **监督中**
+`ch6.home.06.alt` — **有人抚摸地板上的雪貂。**
+`ch6.home.07.media` — `media-originales/mascotas/IMG_4188.jpeg`
+`ch6.home.07.caption` — **另一位管理层**
+`ch6.home.07.alt` — **有人在草地上抚摸一只小雪貂。**
+
+`ch7.poster1.alt` — **《Incantation》的电影海报。**
+`ch7.poster2.alt` — **《Loco México Mágico》的电影海报。**
+`ch7.poster3.alt` — **《Los insólitos peces gato》的电影海报。**
+`ch7.poster4.alt` — **《Tropic Thunder》的电影海报。**
+
+`ch8.next.01.media` — `media-originales/viajes-europa/IMG_0194.MOV`
+`ch8.next.01.caption` — **另一座城市**
+`ch8.next.01.alt` — **日落时的城市河流。**
+`ch8.next.02.media` — `media-originales/viajes-europa/IMG_0296.MOV`
+`ch8.next.02.caption` — **石头与高度**
+`ch8.next.02.alt` — **悬崖上的石头堡垒。**
+`ch8.next.03.media` — `media-originales/viajes-europa/IMG_8672.MOV`
+`ch8.next.03.caption` — **开放的路**
+`ch8.next.03.alt` — **树木成荫的小路。**
+`ch8.next.04.media` — `media-originales/viajes-europa/IMG_2184.jpeg`
+`ch8.next.04.caption` — **瓜达拉哈拉**
+`ch8.next.04.alt` — **瓜达拉哈拉有烟雾和灯光的夜间活动。**
+`ch8.next.05.media` — `media-originales/viajes-europa/IMG_3275.jpeg`
+`ch8.next.05.caption` — **瓜达拉哈拉**
+`ch8.next.05.alt` — **瓜达拉哈拉的鱼和色彩。**
+`ch8.next.06.media` — `media-originales/viajes-europa/IMG_8743.jpeg`
+`ch8.next.06.caption` — **慕尼黑**
+`ch8.next.06.alt` — **慕尼黑一座大教堂的内部。**
+`ch8.next.07.media` — `media-originales/china/IMG_7210.jpeg`
+`ch8.next.07.caption` — **北京**
+`ch8.next.07.alt` — **北京的一排马雕像。**
+`ch8.next.08.media` — `media-originales/viajes-europa/IMG_8790.jpeg`
+`ch8.next.08.caption` — **慕尼黑**
+`ch8.next.08.alt` — **慕尼黑一座宏伟建筑前的人。**
 
