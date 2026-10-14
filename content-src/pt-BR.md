@@ -368,3 +368,40 @@ Não há botão, CTA ou texto depois disso.
 `ui.reset` — **De novo**
 `ch1.paper.label` — **Coisas que faço e não sei defender**
 
+## E3a — Arquivo e movimento
+
+`arc.title` — **Arquivo de viagens**
+`arc.subtitle` — **Treze lugares, um só jeito de se mover por eles.**
+`ui.carousel_previous` — **Foto anterior**
+`ui.carousel_next` — **Próxima foto**
+`ui.carousel_overview` — **Ver tudo**
+`ui.carousel_close_overview` — **Fechar**
+`ui.carousel_slide` — **Slide {current} de {total}**
+`ui.carousel_region` — **Arquivo de viagens**
+
+## ella — O que eu sei sobre você
+
+### Telas
+
+`ella.title` — **O que eu sei de você**
+
+`ella.lede` — **É uma lista curta, e prefiro avisar antes de inventar o resto.**
+
+`ella.zh.display` — **你会说中文。**
+
+`ella.zh.caption` — **Você fala chinês. Nível HSK 1.000.000.**
+
+`ella.item1` — **Eu estudei chinês em Wuhan por cinco ou seis meses e cheguei ao nível HSK 1.**
+
+`ella.item2` — **A Gabi diz que eu e você temos o mesmo senso de humor... acho que sim. É uma afirmação perigosa: agora preciso estar à altura.**
+
+`ella.item3` — **Você escreve em português; eu respondo com o dicionário aberto. Suspeito que estou em desvantagem.**
+
+`ella.q.intro` — **Três perguntas, sem pressa.**
+
+`ella.q1` — **Como você acabou falando chinês?**
+
+`ella.q2` — **Que lugar do Brasil eu deveria conhecer primeiro?**
+
+`ella.q3` — **O que mais faz você rir?**
+

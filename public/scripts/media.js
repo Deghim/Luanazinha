@@ -2,8 +2,13 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const saveData = navigator.connection?.saveData;
   const videos = [...document.querySelectorAll('[data-lazy-video]')];
+  const promoteSources = (video) => video.querySelectorAll('source[data-src]').forEach((source) => {
+    source.src = source.dataset.src;
+    source.removeAttribute('data-src');
+  });
   const play = (video) => {
     if (reduced || saveData) return;
+    promoteSources(video);
     if (video.readyState === 0) video.load();
     video.play().catch(() => {});
   };
@@ -41,6 +46,7 @@
   const image = dialog?.querySelector('[data-lightbox-image]');
   const caption = dialog?.querySelector('[data-lightbox-caption]');
   let lightboxIndex = 0;
+  let lightboxTrigger = null;
   const showImage = (index) => {
     lightboxIndex = (index + triggers.length) % triggers.length;
     const trigger = triggers[lightboxIndex];
@@ -51,6 +57,7 @@
   };
   const openLightbox = (event) => {
     const trigger = event.currentTarget;
+    lightboxTrigger = trigger;
     lightboxIndex = triggers.indexOf(trigger);
     showImage(lightboxIndex);
     dialog?.showModal();
@@ -64,6 +71,8 @@
     if (event.key === 'ArrowLeft') showImage(lightboxIndex - 1);
     if (event.key === 'ArrowRight') showImage(lightboxIndex + 1);
   });
+  dialog?.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+  dialog?.addEventListener('close', () => { lightboxTrigger?.focus(); lightboxTrigger = null; });
 
   const moments = [...document.querySelectorAll('[data-moment]')];
   const frames = [...document.querySelectorAll('[data-day-frame]')];

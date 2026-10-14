@@ -370,3 +370,40 @@ No button, CTA, or text follows.
 `ui.reset` — **Again**
 `ch1.paper.label` — **Things I do and can't defend**
 
+## E3a — Archive and movement
+
+`arc.title` — **Travel archive**
+`arc.subtitle` — **Thirteen places, one way of getting around.**
+`ui.carousel_previous` — **Previous photo**
+`ui.carousel_next` — **Next photo**
+`ui.carousel_overview` — **See all**
+`ui.carousel_close_overview` — **Close**
+`ui.carousel_slide` — **Slide {current} of {total}**
+`ui.carousel_region` — **Travel archive**
+
+## ella — Things I know about you
+
+### Screens
+
+`ella.title` — **Things I know about you**
+
+`ella.lede` — **It's a short list. I'd rather admit that than make up the rest.**
+
+`ella.zh.display` — **你会说中文。**
+
+`ella.zh.caption` — **You speak Chinese. HSK level: 1,000,000.**
+
+`ella.item1` — **Chinese is common ground. Mine stopped at HSK 1, after five or six months in Wuhan.**
+
+`ella.item2` — **Gabi says we have the same sense of humor... I think so. A bold claim: now I have to live up to it.**
+
+`ella.item3` — **You write in Portuguese. I reply with the dictionary open. I suspect I'm losing.**
+
+`ella.q.intro` — **Three questions, no rush.**
+
+`ella.q1` — **How did you end up speaking Chinese?**
+
+`ella.q2` — **Which place in Brazil should I see first?**
+
+`ella.q3` — **What makes you laugh the hardest?**
+

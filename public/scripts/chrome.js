@@ -24,7 +24,7 @@
   updateProgress();
 
   const setCurrent = (id) => {
-    const number = String(Number(id.replace('ch', '')) + 1).padStart(2, '0');
+    const number = String(Math.max(0, chapters.findIndex((chapter) => chapter.id === id) + 1)).padStart(2, '0');
     if (current) current.textContent = number;
     if (currentMobile) currentMobile.textContent = number;
     document.querySelectorAll('[data-chapter-link]').forEach((link) => {
@@ -39,19 +39,23 @@
     if (visible) setCurrent(visible.target.id);
   }, { threshold: 0, rootMargin: '-40% 0px -59% 0px' });
   chapters.forEach((chapter) => chapterObserver.observe(chapter));
-  setCurrent(location.hash.match(/^#ch\d+$/)?.[0].slice(1) || 'ch0');
+  const hashId = location.hash.match(/^#(?:ch\d+|archive|ella)$/)?.[0].slice(1);
+  setCurrent(hashId || 'ch0');
 
   const menu = document.querySelector('#chapter-menu');
   const openers = document.querySelectorAll('[data-chapter-menu-open]');
+  let menuOpener = null;
   const close = () => menu?.close();
   openers.forEach((button) => button.addEventListener('click', () => {
     if (!menu) return;
+    menuOpener = button;
     menu.showModal();
-    menu.querySelector('a')?.focus();
+    menu.querySelector('[data-chapter-menu-close]')?.focus();
   }));
   document.querySelector('[data-chapter-menu-close]')?.addEventListener('click', close);
   menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
   menu?.addEventListener('click', (event) => { if (event.target === menu) close(); });
+  menu?.addEventListener('close', () => { menuOpener?.focus(); menuOpener = null; });
   menu?.addEventListener('keydown', (event) => {
     const links = [...menu.querySelectorAll('a')];
     const index = links.indexOf(document.activeElement);

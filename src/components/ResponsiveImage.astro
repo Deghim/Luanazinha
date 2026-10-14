@@ -6,7 +6,7 @@ interface MediaImage {
   w: number;
   h: number;
   lqip?: string | null;
-  srcset: { avif: Variant[]; webp: Variant[] };
+  srcset: { avif: Variant[]; webp?: Variant[] };
 }
 interface Props {
   media: MediaImage;
@@ -18,22 +18,21 @@ interface Props {
 }
 const { media, alt, caption, eager = false, className = '', lightbox = false } = Astro.props;
 const avif = media.srcset.avif.map((item) => `${withBase(item.src)} ${item.w}w`).join(', ');
-const webp = media.srcset.webp.map((item) => `${withBase(item.src)} ${item.w}w`).join(', ');
-const full = withBase(media.srcset.avif.at(-1)?.src ?? media.srcset.webp.at(-1)?.src ?? '');
-const fallback = withBase(media.srcset.webp.at(-1)?.src ?? '');
+const full = withBase(media.srcset.avif.at(-1)?.src ?? '');
+const fallback = withBase(media.srcset.avif.find((item) => item.w === 1200)?.src ?? media.srcset.avif.at(-1)?.src ?? '');
 ---
 <figure class:list={['media-figure', className]}>
   {lightbox ? (
     <button type="button" class="lightbox-trigger" data-lightbox-src={full} data-lightbox-alt={alt} data-lightbox-caption={caption} aria-label={alt}>
       <picture>
         <source type="image/avif" srcset={avif} sizes="(min-width: 900px) 42vw, 90vw" />
-        <img src={fallback} srcset={webp} sizes="(min-width: 900px) 42vw, 90vw" width={media.w} height={media.h} alt={alt} loading={eager ? undefined : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
+        <img src={fallback} srcset={avif} sizes="(min-width: 900px) 42vw, 90vw" width={media.w} height={media.h} alt={alt} loading={eager ? undefined : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
       </picture>
     </button>
   ) : (
     <picture>
       <source type="image/avif" srcset={avif} sizes="(min-width: 900px) 42vw, 90vw" />
-      <img src={fallback} srcset={webp} sizes="(min-width: 900px) 42vw, 90vw" width={media.w} height={media.h} alt={alt} loading={eager ? undefined : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
+      <img src={fallback} srcset={avif} sizes="(min-width: 900px) 42vw, 90vw" width={media.w} height={media.h} alt={alt} loading={eager ? undefined : 'lazy'} fetchpriority={eager ? 'high' : undefined} decoding="async" />
     </picture>
   )}
   {caption && <figcaption>{caption}</figcaption>}

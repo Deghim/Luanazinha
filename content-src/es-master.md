@@ -405,3 +405,40 @@ No hay botón, CTA ni texto posterior.
 5. `ch6`: ¿existe una foto aprobada de Gabi que deba identificarse antes de nombrarla?
 6. `ch7`: ¿se aprueban los cuatro títulos de películas y la tarjeta tipográfica de comida?
 7. `ch9`: ¿se mantiene una sola foto final sin caption y cuál variante de cierre se usará?
+
+## E3a — Archivo y movimiento
+
+`arc.title` — **Archivo de viaje**
+`arc.subtitle` — **Trece lugares, una forma de moverse.**
+`ui.carousel_previous` — **Foto anterior**
+`ui.carousel_next` — **Foto siguiente**
+`ui.carousel_overview` — **Ver todo**
+`ui.carousel_close_overview` — **Cerrar**
+`ui.carousel_slide` — **Diapositiva {current} de {total}**
+`ui.carousel_region` — **Archivo de viaje**
+
+## ella — Lo que sé de ti
+
+### Pantallas
+
+`ella.title` — **Lo que sé de ti**
+
+`ella.lede` — **Es una lista corta. Prefiero decirlo antes de inventar el resto.**
+
+`ella.zh.display` — **你会说中文。**
+
+`ella.zh.caption` — **Hablas chino. Nivel HSK 1,000,000.**
+
+`ella.item1` — **Estudié chino en Wuhan durante cinco o seis meses y llegué a HSK 1.**
+
+`ella.item2` — **Gabi dice que tenemos el mismo humor... creo. Es una afirmación peligrosa: ahora tengo que estar a la altura.**
+
+`ella.item3` — **Escribes en portugués; yo respondo con el diccionario abierto. Sospecho que llevo desventaja.**
+
+`ella.q.intro` — **Tres preguntas, sin prisa.**
+
+`ella.q1` — **¿Cómo terminaste hablando chino?**
+
+`ella.q2` — **¿Qué lugar de Brasil debería conocer primero?**
+
+`ella.q3` — **¿Qué es lo que más te hace reír?**

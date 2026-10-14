@@ -1,0 +1,20 @@
+---
+import { withBase } from '../lib/url';
+
+interface Props {
+  media: any;
+  caption?: string;
+  alt: string;
+  className?: string;
+}
+const { media, caption, alt, className = '' } = Astro.props;
+const poster = withBase(media?.posters?.desktop ?? media?.poster ?? '');
+---
+
+<figure class:list={['interlude', className]} data-interlude data-interlude-key={media?.source ?? ''}>
+  <video class="interlude-video" data-interlude-video muted loop playsinline preload="none" poster={poster} aria-label={alt}>
+    <source media="(min-width: 900px)" data-src={withBase(media.sources.desktop.mp4)} type="video/mp4" />
+    <source data-src={withBase(media.sources.mobile.mp4)} type="video/mp4" />
+  </video>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

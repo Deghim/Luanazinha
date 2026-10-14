@@ -6,3 +6,5 @@ public/media/.cache/
 
 .pnpm-store/
 .DS_Store
+out/
+tools/

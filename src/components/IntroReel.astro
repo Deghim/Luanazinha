@@ -1,0 +1,51 @@
+---
+import { withBase } from '../lib/url';
+import mediaMeta from '../data/media-meta.json';
+
+interface Props {
+  media: Record<string, any>;
+  copy: Record<string, string>;
+  locale: 'en' | 'pt' | 'zh';
+}
+const { media, copy, locale } = Astro.props;
+const text = (key: string) => copy[key] ?? key;
+const introKeys = ['intro.1', 'intro.2', 'intro.3', 'intro.4', 'intro.5', 'intro.6'];
+const isVideo = (record: any) => record?.type === 'video';
+const altKey = locale === 'en' ? 'alt_en' : locale === 'pt' ? 'alt_pt' : 'alt_zh';
+const meta = (key: string) => (mediaMeta as Record<string, any>)[key] ?? null;
+---
+
+<section class="intro-reel" data-intro-reel aria-labelledby="hero-title">
+  <div class="intro-reel-track">
+    {introKeys.map((key, index) => {
+      const record = media[key];
+      const metadata = meta(key);
+      const alt = metadata?.[altKey] ?? text('ch0.photo1.alt');
+      const poster = withBase(record?.posters?.desktop ?? record?.poster ?? '');
+      return <figure class:list={['intro-panel', `intro-panel-${index + 1}`, { 'is-mobile-layer': index < 3 }]} data-intro-panel={index}>
+        {isVideo(record) ? (
+          <video class="intro-panel-media" data-intro-video muted loop playsinline preload="none" poster={poster} aria-label={alt}>
+            <source media="(min-width: 900px)" data-src={withBase(record.sources.desktop.mp4)} type="video/mp4" />
+            <source data-src={withBase(record.sources.mobile.mp4)} type="video/mp4" />
+          </video>
+        ) : (
+          <picture>
+            <source type="image/avif" srcset={record.srcset.avif.map((item: any) => `${withBase(item.src)} ${item.w}w`).join(', ')} sizes="(min-width: 900px) 34vw, 100vw" />
+            {record.srcset.webp?.length > 0 && <source type="image/webp" srcset={record.srcset.webp.map((item: any) => `${withBase(item.src)} ${item.w}w`).join(', ')} sizes="(min-width: 900px) 34vw, 100vw" />}
+            <img class="intro-panel-media" src={withBase(record.srcset.avif.find((item: any) => item.w === 1200)?.src ?? record.srcset.avif.at(-1)?.src)} srcset={record.srcset.avif.map((item: any) => `${withBase(item.src)} ${item.w}w`).join(', ')} sizes="(min-width: 900px) 34vw, 100vw" width={record.w} height={record.h} alt={alt} loading={index === 0 ? undefined : 'lazy'} fetchpriority={index === 0 ? 'high' : undefined} decoding="async" style={record.lqip ? `background-image:url('${record.lqip}')` : undefined} />
+          </picture>
+        )}
+      </figure>;
+    })}
+  </div>
+  <div class="intro-scrim" aria-hidden="true"></div>
+  <div class="hero-content intro-content">
+    <p class="eyebrow">{text('ch0.s4.text')}</p>
+    <h1 id="hero-title" class="hero-title"><span class="reveal">{text('ch0.s1.text')}</span></h1>
+    <div class="hero-copy" aria-live="polite">
+      <p class="reveal-line">{text('ch0.s2.text')}</p>
+      <p class="reveal-line">{text('ch0.s3.text')}</p>
+    </div>
+    <a class="hero-cta" href="#ch1">{text('ch0.cta')} <span aria-hidden="true">↓</span></a>
+  </div>
+</section>

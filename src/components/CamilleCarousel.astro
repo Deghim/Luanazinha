@@ -1,0 +1,74 @@
+---
+import { withBase } from '../lib/url';
+
+interface Slide {
+  key: string;
+  media: any;
+  place: string;
+  country: string;
+  alt: string;
+  caption?: string;
+}
+interface Props {
+  slides: Slide[];
+  title: string;
+  subtitle?: string;
+  previousLabel: string;
+  nextLabel: string;
+  overviewLabel: string;
+  closeOverviewLabel: string;
+  slideLabel: string;
+  regionLabel: string;
+  variant?: 'full' | 'compact';
+}
+const { slides, title, subtitle, previousLabel, nextLabel, overviewLabel, closeOverviewLabel, slideLabel, regionLabel, variant = 'full' } = Astro.props;
+const formatSlideLabel = (current: number, total: number) => slideLabel.replaceAll('{current}', String(current)).replaceAll('{total}', String(total));
+const overviewTitleId = `carousel-overview-title-${variant}-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+---
+
+<section class:list={['camille-carousel', `camille-carousel-${variant}`]} data-carousel data-carousel-variant={variant} role="region" aria-roledescription="carousel" aria-label={regionLabel}>
+  <slot name="chapter-intro" />
+  <div class="carousel-stage" data-carousel-stage>
+    <div class="carousel-slides" data-carousel-slides>
+      {slides.map((slide, index) => {
+        const record = slide.media;
+        const isVideo = record?.type === 'video';
+        const poster = withBase(record?.posters?.desktop ?? record?.poster ?? '');
+        return <article class:list={['carousel-slide', { 'is-active': index === 0 }]} data-carousel-slide={index} data-place={slide.place} data-country={slide.country} aria-hidden={index === 0 ? 'false' : 'true'}>
+          {isVideo ? (
+            <video class="carousel-media" data-carousel-video muted loop playsinline preload="none" poster={poster} aria-label={slide.alt}>
+              <source media="(min-width: 900px)" data-src={withBase(record.sources.desktop.mp4)} type="video/mp4" />
+              <source data-src={withBase(record.sources.mobile.mp4)} type="video/mp4" />
+            </video>
+          ) : (
+            <img class="carousel-media" src={withBase(record.srcset.avif.find((item: any) => item.w === 1200)?.src ?? record.srcset.avif.at(-1)?.src)} srcset={record.srcset.avif.map((item: any) => `${withBase(item.src)} ${item.w}w`).join(', ')} sizes="100vw" alt={slide.alt} width={record.w} height={record.h} loading={index < 2 ? undefined : 'lazy'} decoding="async" />
+          )}
+          <div class="carousel-scrim" aria-hidden="true"></div>
+        </article>;
+      })}
+    </div>
+    <button type="button" class="carousel-arrow carousel-prev" data-carousel-prev aria-label={previousLabel}>←</button>
+    <button type="button" class="carousel-arrow carousel-next" data-carousel-next aria-label={nextLabel}>→</button>
+    <div class="carousel-title" aria-live="polite"><h3 data-carousel-place>{slides[0]?.place}</h3><p data-carousel-country>{slides[0]?.country}</p></div>
+    <p class="carousel-counter" aria-hidden="true"><span data-carousel-current>01</span> — <span>{String(slides.length).padStart(2, '0')}</span></p>
+    <p class="sr-only" data-carousel-live>{formatSlideLabel(1, slides.length)}: {slides[0]?.place}</p>
+    <span class="carousel-pointer" data-carousel-pointer aria-hidden="true">+</span>
+  </div>
+  <div class="carousel-tools">
+    <button type="button" class="carousel-overview-button" data-carousel-overview aria-expanded="false">{overviewLabel}</button>
+    <div class="carousel-thumbs" data-carousel-thumbs aria-label={regionLabel}>
+      {slides.map((slide, index) => <button type="button" class:list={{ 'is-active': index === 0 }} data-carousel-thumb={index} aria-label={`${formatSlideLabel(index + 1, slides.length)}: ${slide.place}`} aria-current={index === 0 ? 'true' : undefined}>
+        {slide.media.type === 'video' ? <img src={withBase(slide.media.posters?.mobile ?? slide.media.poster)} alt="" aria-hidden="true" /> : <img src={withBase(slide.media.srcset.avif[0]?.src)} alt="" aria-hidden="true" />}
+      </button>)}
+    </div>
+  </div>
+  <div class="carousel-overview" data-carousel-overview-panel role="dialog" aria-modal="true" aria-labelledby={overviewTitleId} hidden>
+    <div class="overview-head"><div><p id={overviewTitleId}>{title}</p>{subtitle && <small>{subtitle}</small>}</div><button type="button" data-carousel-close-overview aria-label={closeOverviewLabel}>×</button></div>
+    <div class="overview-track" data-carousel-overview-track>
+      {slides.map((slide, index) => <button type="button" class="overview-card" data-carousel-card={index}>
+        {slide.media.type === 'video' ? <img src={withBase(slide.media.posters?.mobile ?? slide.media.poster)} alt={slide.alt} /> : <img src={withBase(slide.media.srcset.avif.find((item: any) => item.w === 1200)?.src ?? slide.media.srcset.avif.at(-1)?.src)} alt={slide.alt} />}
+        <span>{String(index + 1).padStart(2, '0')} · {slide.place}</span>
+      </button>)}
+    </div>
+  </div>
+</section>

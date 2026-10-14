@@ -3,8 +3,12 @@ import ResponsiveImage from './ResponsiveImage.astro';
 import LazyVideo from './LazyVideo.astro';
 import MediaStrip from './MediaStrip.astro';
 import Lightbox from './Lightbox.astro';
+import IntroReel from './IntroReel.astro';
+import CamilleCarousel from './CamilleCarousel.astro';
+import Interlude from './Interlude.astro';
 import Reveal from './Reveal.astro';
 import { withBase } from '../lib/url';
+import mediaMeta from '../data/media-meta.json';
 
 interface Props {
   copy: Record<string, string>;
@@ -13,17 +17,50 @@ interface Props {
 }
 const { copy, media, locale } = Astro.props;
 const t = (key: string) => copy[key] ?? key;
-const hero = media['ch0.photo1.media'];
+const ellaDisplay = t('ella.zh.display');
+const ellaDisplayFirst = ellaDisplay.slice(0, 3);
+const ellaDisplaySecond = ellaDisplay.slice(3);
+const meta = (key: string) => (mediaMeta as Record<string, any>)[key] ?? {};
+const localizedMeta = (key: string, field: 'alt' | 'caption') => meta(key)[`${field}_${locale === 'zh' ? 'zh' : locale}`] ?? '';
+const localizedPlaceCaption = (key: string) => {
+  const item = meta(key);
+  return item.place ? (item[`caption_${locale === 'zh' ? 'zh' : locale}`] ?? item.place) : '';
+};
 const languages = [
   { code: 'en', label: 'EN', href: '/en/' },
   { code: 'pt', label: 'PT', href: '/pt/' },
   { code: 'zh', label: '中文', href: '/zh/' },
 ];
-const chapters = Array.from({ length: 10 }, (_, index) => ({
-  id: `ch${index}`,
-  number: String(index + 1).padStart(2, '0'),
-  title: index === 0 ? t('ch0.s1.text') : t(`ch${index}.s1.title`),
-}));
+const chapters = [
+  { id: 'ch0', title: t('ch0.s1.text') },
+  { id: 'ch1', title: t('ch1.s1.title') },
+  { id: 'ch2', title: t('ch2.s1.title') },
+  { id: 'ch3', title: t('ch3.s1.title') },
+  { id: 'ch4', title: t('ch4.s1.title') },
+  { id: 'ch5', title: t('ch5.s1.title') },
+  { id: 'archive', title: t('arc.title') },
+  { id: 'ch6', title: t('ch6.s1.title') },
+  { id: 'ch7', title: t('ch7.s1.title') },
+  { id: 'ch8', title: t('ch8.s1.title') },
+  { id: 'ella', title: t('ella.title') },
+  { id: 'ch9', title: t('ch9.s1.text') },
+].map((chapter, index) => ({ ...chapter, number: String(index + 1).padStart(2, '0') }));
+const chapterTotal = chapters.length;
+const chapterStamp = (id: string) => {
+  const chapter = chapters.find((item) => item.id === id);
+  return `${chapter?.number ?? '00'} / ${String(chapterTotal).padStart(2, '0')}`;
+};
+const localizedCountry = (country: string, localeCode: 'en' | 'pt' | 'zh') => ({
+  Mexico: { en: 'Mexico', pt: 'México', zh: '墨西哥' },
+  China: { en: 'China', pt: 'China', zh: '中国' },
+  Europa: { en: 'Europe', pt: 'Europa', zh: '欧洲' },
+}[country]?.[localeCode] ?? country);
+const interludeCaption = (key: string) => {
+  const item = meta(key);
+  const place = item[`place_${locale}`] ?? item.place;
+  const country = item[`country_${locale}`] ?? (item.country ? localizedCountry(item.country, locale) : '');
+  return [place, country].filter(Boolean).join(' · ');
+};
 const dayMoments = ['ch1.s2.text', 'ch1.s3.text', 'ch1.s4.text', 'ch1.s5.text', 'ch1.s6.text'];
 const musicItems = [
   { kind: 'video' as const, media: media['ch2.video1.media'], alt: t('ch2.video1.alt'), caption: t('ch2.video1.caption') },
@@ -33,6 +70,30 @@ const musicItems = [
 const chinaItems = [
   { kind: 'image' as const, media: media['ch3.photo3.media'], alt: t('ch3.photo3.alt'), caption: t('ch3.photo3.caption') },
   { kind: 'image' as const, media: media['ch3.photo4.media'], alt: t('ch3.photo4.alt'), caption: t('ch3.photo4.caption') },
+];
+const extraItems = (prefix: string, count: number) => Array.from({ length: count }, (_, index) => {
+  const key = `${prefix}.${index + 1}`;
+  return { kind: 'image' as const, key, media: media[key], alt: localizedMeta(key, 'alt'), caption: localizedPlaceCaption(key) };
+});
+const ellaItems = [1, 2, 3].map((index) => {
+  const key = `ella.${index}`;
+  return { key, media: media[key], alt: localizedMeta(key, 'alt'), caption: localizedMeta(key, 'caption') };
+});
+const chinaExtras = extraItems('x.ch3', 6);
+const archiveSlides = Array.from({ length: 13 }, (_, index) => {
+  const key = `arc.${index + 1}`;
+  const item = media[key];
+  const detail = meta(key);
+  return { key, media: item, place: detail[`place_${locale}`] ?? detail.place ?? detail[`caption_${locale}`] ?? 'China', country: detail.country === 'Mexico' ? (locale === 'zh' ? '墨西哥' : locale === 'pt' ? 'México' : locale === 'en' ? 'Mexico' : 'México') : (locale === 'zh' ? '中国' : locale === 'pt' ? 'China' : 'China'), alt: detail[`alt_${locale}`] ?? '', caption: detail[`caption_${locale}`] ?? '' };
+});
+const mexicoLabel = locale === 'zh' ? '墨西哥' : locale === 'pt' ? 'México' : locale === 'en' ? 'Mexico' : 'México';
+const compactChinaSlides = [
+  ...chinaItems.map((item, index) => ({ key: `ch3.${index + 3}`, media: item.media, place: item.caption ?? 'China', country: 'China', alt: item.alt, caption: item.caption })),
+  ...chinaExtras.map((item) => ({ key: item.key, media: item.media, place: item.caption || 'China', country: 'China', alt: item.alt, caption: item.caption })),
+];
+const compactPeopleSlides = [
+  { key: 'ch6.photo3.media', media: media['ch6.photo3.media'], place: 'Casa', country: mexicoLabel, alt: t('ch6.photo3.alt'), caption: t('ch6.s3.text') },
+  ...extraItems('x.ch6', 4).map((item) => ({ key: item.key, media: item.media, place: item.caption || 'Casa', country: mexicoLabel, alt: item.alt, caption: item.caption })),
 ];
 ---
 
@@ -45,18 +106,6 @@ const chinaItems = [
 
 <div class="top-progress" aria-hidden="true"><span data-progress-bar></span></div>
 
-<aside class="chapter-rail" aria-label={t('ui.aria.chapter_navigation')}>
-  <button class="chapter-count" type="button" data-chapter-menu-open aria-haspopup="dialog"><span data-current-chapter>01</span> / 10</button>
-  <ol>
-    {chapters.map((chapter) => <li><a href={`#${chapter.id}`} data-chapter-link={chapter.id} aria-label={chapter.title}><span>{chapter.number}</span></a></li>)}
-  </ol>
-</aside>
-
-<div class="mobile-chrome" aria-label={t('ui.aria.chapter_navigation')}>
-  <span><b data-current-chapter-mobile>01</b> / 10</span>
-  <button type="button" data-chapter-menu-open aria-haspopup="dialog">{t('ui.chapter_menu')}</button>
-</div>
-
 <dialog class="chapter-menu" id="chapter-menu" aria-labelledby="chapter-menu-title">
   <div class="menu-head">
     <p class="eyebrow" id="chapter-menu-title">{t('ui.chapter_menu')}</p>
@@ -68,27 +117,23 @@ const chinaItems = [
 </dialog>
 
 <main id="main-content" data-story data-locale={locale}>
-  <section class="hero" id="ch0" data-chapter="0" aria-labelledby="hero-title">
-    <picture>
-      <source type="image/avif" srcset={hero.srcset.avif.map((item: any) => `${withBase(item.src)} ${item.w}w`).join(', ')} sizes="100vw" />
-      <img class="hero-media" src={withBase(hero.srcset.webp.at(-1)?.src)} srcset={hero.srcset.webp.map((item: any) => `${withBase(item.src)} ${item.w}w`).join(', ')} sizes="100vw" width={hero.w} height={hero.h} alt={t('ch0.photo1.alt')} fetchpriority="high" decoding="async" />
-    </picture>
-    <div class="hero-scrim" aria-hidden="true"></div>
-    <div class="hero-content">
-      <p class="chapter-kicker">01 / 10</p>
-      <p class="eyebrow">{t('ch0.s4.text')}</p>
-      <h1 id="hero-title" class="hero-title"><Reveal>{t('ch0.s1.text')}</Reveal></h1>
-      <div class="hero-copy" aria-live="polite">
-        <p class="reveal-line">{t('ch0.s2.text')}</p>
-        <p class="reveal-line">{t('ch0.s3.text')}</p>
-      </div>
-      <a class="hero-cta" href="#ch1">{t('ch0.cta')} <span aria-hidden="true">↓</span></a>
-    </div>
-  </section>
+  <section id="ch0" data-chapter="0" aria-labelledby="hero-title"><IntroReel media={media} copy={copy} locale={locale} /></section>
+
+  <aside class="chapter-rail" aria-label={t('ui.aria.chapter_navigation')}>
+    <button class="chapter-count" type="button" data-chapter-menu-open aria-haspopup="dialog"><span data-current-chapter>01</span> / {String(chapterTotal).padStart(2, '0')}</button>
+    <ol>
+      {chapters.map((chapter) => <li><a href={`#${chapter.id}`} data-chapter-link={chapter.id} aria-label={chapter.title}><span>{chapter.number}</span></a></li>)}
+    </ol>
+  </aside>
+
+  <div class="mobile-chrome" aria-label={t('ui.aria.chapter_navigation')}>
+    <span><b data-current-chapter-mobile>01</b> / {String(chapterTotal).padStart(2, '0')}</span>
+    <button type="button" data-chapter-menu-open aria-haspopup="dialog">{t('ui.chapter_menu')}</button>
+  </div>
 
   <section class="chapter chapter-one" id="ch1" data-chapter="1" aria-labelledby="ch1-title">
     <div class="chapter-intro">
-      <p class="chapter-kicker">02 / 10</p>
+      <p class="chapter-kicker">{chapterStamp('ch1')}</p>
       <h2 id="ch1-title">{t('ch1.s1.title')}</h2>
     </div>
     <div class="day-stage">
@@ -108,11 +153,14 @@ const chinaItems = [
       <p class="eyebrow">{t('ch1.paper.label')}</p>
       <p>{t('ch1.s6.text')}</p>
     </div>
+    <div class="chapter-extra collage-extra" aria-label={t('ui.aria.media_strip')}>
+      {extraItems('x.ch1', 3).map((item, index) => <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox className={`extra-${index + 1}`} />)}
+    </div>
   </section>
 
   <section class="chapter chapter-music" id="ch2" data-chapter="2" aria-labelledby="ch2-title">
     <div class="chapter-intro split-intro">
-      <div><p class="chapter-kicker">03 / 10</p><h2 id="ch2-title">{t('ch2.s1.title')}</h2></div>
+      <div><p class="chapter-kicker">{chapterStamp('ch2')}</p><h2 id="ch2-title">{t('ch2.s1.title')}</h2></div>
       <p>{t('ch2.s2.text')}</p>
     </div>
     <div class="music-collage">
@@ -120,6 +168,7 @@ const chinaItems = [
       <p class="music-note">{t('ch2.s3.text')} {t('ch2.s4.text')}</p>
     </div>
     <div class="music-mobile-strip"><MediaStrip items={musicItems} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <div class="chapter-extra extra-strip"><MediaStrip items={extraItems('x.ch2', 2)} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
     <div class="youtube-links" aria-label={t('ch2.s5.text')}>
       {[1, 2].map((index) => <button type="button" class="youtube-facade" data-youtube-facade data-youtube-url={t(`ch2.video_link_${index}.url`)} data-youtube-title={t(`ch2.video_link_${index}.title`)} aria-label={`${t(`ch2.video_link_${index}.label`)}: ${t(`ch2.video_link_${index}.title`)}`}>
         <span class="facade-play" aria-hidden="true">▶</span>
@@ -130,10 +179,11 @@ const chinaItems = [
 
   <section class="chapter chapter-china" id="ch3" data-chapter="3" aria-labelledby="ch3-title">
     <div class="chapter-intro split-intro">
-      <div><p class="chapter-kicker">04 / 10</p><h2 id="ch3-title">{t('ch3.s1.title')}</h2></div>
+      <div><p class="chapter-kicker">{chapterStamp('ch3')}</p><h2 id="ch3-title">{t('ch3.s1.title')}</h2></div>
       <p>{t('ch3.s2.text')}</p>
     </div>
-    <div class="china-sheet"><MediaStrip items={chinaItems} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <div class="china-sheet"><MediaStrip items={[...chinaItems, ...chinaExtras]} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+    <CamilleCarousel slides={compactChinaSlides} title={t('ch3.s1.title')} previousLabel={t('ui.carousel_previous')} nextLabel={t('ui.carousel_next')} overviewLabel={t('ui.carousel_overview')} closeOverviewLabel={t('ui.carousel_close_overview')} slideLabel={t('ui.carousel_slide')} regionLabel={t('ch3.s1.title')} variant="compact" />
     <div class="train-band">
       <div class="train-copy"><p>{t('ch3.s3.text')}</p><p>{t('ch3.s4.text')}</p><p>{t('ch3.s5.text')}</p></div>
       <div class="train-videos"><LazyVideo media={media['ch3.video1.media']} alt={t('ch3.video1.alt')} caption={t('ch3.video1.caption')} /><LazyVideo media={media['ch3.video2.media']} alt={t('ch3.video2.alt')} caption={t('ch3.video2.caption')} /></div>
@@ -141,42 +191,105 @@ const chinaItems = [
     </div>
   </section>
 
+  <Interlude media={media['int.1']} alt={localizedMeta('int.1', 'alt')} caption={interludeCaption('int.1')} />
+
   <section class="chapter paper-chapter truth-chapter" id="ch4" data-chapter="4" aria-labelledby="ch4-title">
-    <div class="chapter-intro"><p class="chapter-kicker">05 / 10</p><h2 id="ch4-title">{t('ch4.s1.title')}</h2><p>{t('ch4.s2.text')}</p></div>
+    <div class="chapter-intro"><p class="chapter-kicker">{chapterStamp('ch4')}</p><h2 id="ch4-title">{t('ch4.s1.title')}</h2><p>{t('ch4.s2.text')}</p></div>
     <div class="truths" data-truths>{[1, 2, 3].map((index) => <button type="button" data-truth={index}><span>0{index}</span>{t(`ch4.set_main.statement_${index}`)}</button>)}</div>
     <p class="truth-reveal" data-truth-reveal hidden>{t('ch4.reveal.text')}</p>
     <button type="button" class="reset-truth" data-truth-reset>{t('ui.reset')}</button>
   </section>
 
+  <Interlude media={media['int.9']} alt={localizedMeta('int.9', 'alt')} caption={interludeCaption('int.9')} />
+
   <section class="chapter adrenaline" id="ch5" data-chapter="5" aria-labelledby="ch5-title">
-    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">06 / 10</p><h2 id="ch5-title">{t('ch5.s1.title')}</h2></div><p>{t('ch5.s2.text')}</p></div>
+    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">{chapterStamp('ch5')}</p><h2 id="ch5-title">{t('ch5.s1.title')}</h2></div><p>{t('ch5.s2.text')}</p></div>
     <div class="bungee-strip"><MediaStrip items={[1, 2, 3].map((index) => ({ kind: 'video' as const, media: media[`ch5.video${index}.media`], alt: t(`ch5.video${index}.alt`), caption: t(`ch5.video${index}.caption`) }))} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
     <div class="skydive-grid"><ResponsiveImage media={media['ch5.photo4.media']} alt={t('ch5.photo4.alt')} caption={t('ch5.photo4.caption')} lightbox /><ResponsiveImage media={media['ch5.photo5.media']} alt={t('ch5.photo5.alt')} caption={t('ch5.photo5.caption')} lightbox /></div>
     <p class="mono-caption">{t('ch5.paracaidas.label')}</p><blockquote>{t('ch5.s4.text')}</blockquote>
     <ResponsiveImage media={media['ch5.photo6.media']} alt={t('ch5.photo6.alt')} caption={t('ch5.s5.text')} lightbox />
+    <div class="chapter-extra extra-strip"><MediaStrip items={extraItems('x.ch5', 3)} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
   </section>
 
+  <Interlude media={media['int.2']} alt={localizedMeta('int.2', 'alt')} caption={interludeCaption('int.2')} />
+
+  <section class="chapter archive-chapter" id="archive" data-chapter="archive" aria-labelledby="archive-title">
+    <CamilleCarousel slides={archiveSlides} title={t('arc.title')} subtitle={t('arc.subtitle')} previousLabel={t('ui.carousel_previous')} nextLabel={t('ui.carousel_next')} overviewLabel={t('ui.carousel_overview')} closeOverviewLabel={t('ui.carousel_close_overview')} slideLabel={t('ui.carousel_slide')} regionLabel={t('arc.title')}>
+      <div slot="chapter-intro" class="archive-chapter-intro">
+        <div><p class="chapter-kicker">{chapterStamp('archive')}</p><h2 id="archive-title">{t('arc.title')}</h2></div>
+        <p>{t('arc.subtitle')}</p>
+      </div>
+    </CamilleCarousel>
+  </section>
+
+  <Interlude media={media['int.10']} alt={localizedMeta('int.10', 'alt')} caption={interludeCaption('int.10')} />
+
   <section class="chapter people" id="ch6" data-chapter="6" aria-labelledby="ch6-title">
-    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">07 / 10</p><h2 id="ch6-title">{t('ch6.s1.title')}</h2></div><p>{t('ch6.s4.text')}</p></div>
+    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">{chapterStamp('ch6')}</p><h2 id="ch6-title">{t('ch6.s1.title')}</h2></div><p>{t('ch6.s4.text')}</p></div>
     <div class="people-grid"><LazyVideo media={media['ch6.video1.media']} alt={t('ch6.video1.alt')} caption={t('ch6.video1.caption')} /><LazyVideo media={media['ch6.video2.media']} alt={t('ch6.video2.alt')} caption={t('ch6.video2.caption')} /><ResponsiveImage media={media['ch6.photo3.media']} alt={t('ch6.photo3.alt')} caption={t('ch6.s3.text')} lightbox /></div>
+    <div class="chapter-extra collage-extra people-extra" aria-label={t('ui.aria.media_strip')}>
+      {extraItems('x.ch6', 4).map((item, index) => <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox className={`extra-${index + 1}`} />)}
+    </div>
+    <CamilleCarousel slides={compactPeopleSlides} title={t('ch6.s1.title')} previousLabel={t('ui.carousel_previous')} nextLabel={t('ui.carousel_next')} overviewLabel={t('ui.carousel_overview')} closeOverviewLabel={t('ui.carousel_close_overview')} slideLabel={t('ui.carousel_slide')} regionLabel={t('ch6.s1.title')} variant="compact" />
     <p class="people-note">{t('ch6.s2.text')}</p>
   </section>
 
+  <Interlude media={media['int.4']} alt={localizedMeta('int.4', 'alt')} caption={interludeCaption('int.4')} />
+
   <section class="chapter now paper-chapter" id="ch7" data-chapter="7" aria-labelledby="ch7-title">
-    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">08 / 10</p><h2 id="ch7-title">{t('ch7.s1.title')}</h2></div><p>{t('ch7.s2.title')}</p></div>
+    <div class="chapter-intro split-intro"><div><p class="chapter-kicker">{chapterStamp('ch7')}</p><h2 id="ch7-title">{t('ch7.s1.title')}</h2></div><p>{t('ch7.s2.title')}</p></div>
     <div class="movie-posters">{[1, 2, 3, 4].map((index) => <div class="movie-poster"><span>0{index}</span><strong>{t(`ch7.poster${index}.title`)}</strong></div>)}</div>
     <div class="food-card"><p class="eyebrow">{t('ch7.s4.title')}</p><p>{t('ch7.s4.text')}</p></div>
     <p class="coffee-line">{t('ch7.s3.text')}</p><p class="brazil-line">{t('ch7.s5.text')}</p>
   </section>
 
+  <Interlude media={media['int.3']} alt={localizedMeta('int.3', 'alt')} caption={interludeCaption('int.3')} />
+
   <section class="chapter future" id="ch8" data-chapter="8" aria-labelledby="ch8-title">
-    <div class="chapter-intro"><p class="chapter-kicker">09 / 10</p><h2 id="ch8-title">{t('ch8.s1.title')}</h2></div>
+    <div class="chapter-intro"><p class="chapter-kicker">{chapterStamp('ch8')}</p><h2 id="ch8-title">{t('ch8.s1.title')}</h2></div>
     <div class="future-list">{[2, 3, 4, 5].map((index) => <p><span>0{index - 1}</span>{t(`ch8.s${index}.text`)}</p>)}</div>
     <div class="future-images"><ResponsiveImage media={media['ch8.photo1.media']} alt={t('ch8.photo1.alt')} caption={t('ch8.photo1.caption')} /><ResponsiveImage media={media['ch8.photo2.media']} alt={t('ch8.photo2.alt')} caption={t('ch8.photo2.caption')} /></div>
+    <div class="chapter-extra extra-strip future-extra"><MediaStrip items={extraItems('x.ch8', 2)} label={t('ui.aria.media_strip')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} /></div>
+  </section>
+
+  <Interlude media={media['int.8']} alt={localizedMeta('int.8', 'alt')} caption={interludeCaption('int.8')} />
+
+  <Interlude media={media['int.6']} alt={localizedMeta('int.6', 'alt')} caption={interludeCaption('int.6')} />
+
+  <section class="chapter ella-chapter" id="ella" data-chapter="ella" aria-labelledby="ella-title">
+    <div class="ella-intro">
+      <div class="ella-copy">
+        <p class="chapter-kicker">{chapterStamp('ella')}</p>
+        <h2 id="ella-title">{t('ella.title')}</h2>
+        <p class="ella-lede">{t('ella.lede')}</p>
+        <ol class="ella-items">
+          {[1, 2, 3].map((index) => <li><span>0{index}</span><p>{t(`ella.item${index}`)}</p></li>)}
+        </ol>
+      </div>
+      <div class="ella-aside">
+        <div class="ella-display-wrap" data-ella-display>
+          <p class="ella-display"><span>{ellaDisplayFirst}</span><span>{ellaDisplaySecond}</span></p>
+          <span class="ella-underline" aria-hidden="true"></span>
+        </div>
+        <p class="ella-display-caption">{t('ella.zh.caption')}</p>
+        <div class="ella-collage" aria-label={t('ui.aria.media_strip')}>
+          {ellaItems.map((item, index) => <ResponsiveImage media={item.media} alt={item.alt} caption={item.caption} lightbox className={`ella-photo ella-photo-${index + 1}`} />)}
+        </div>
+      </div>
+    </div>
+    <div class="ella-questions">
+      <p class="eyebrow">{t('ella.q.intro')}</p>
+      <ol>
+        {[1, 2, 3].map((index) => <li class="ella-question" data-ella-question style={`--ella-index: ${index - 1}`}>
+          <span>0{index}</span>
+          <Reveal><p>{t(`ella.q${index}`)}</p></Reveal>
+        </li>)}
+      </ol>
+    </div>
   </section>
 
   <section class="chapter closing" id="ch9" data-chapter="9" aria-labelledby="ch9-title">
-    <p class="chapter-kicker closing-kicker">10 / 10</p>
+    <p class="chapter-kicker closing-kicker">{chapterStamp('ch9')}</p>
     <ResponsiveImage media={media['ch9.photo1.media']} alt={t('ch9.photo1.alt')} />
     <div class="closing-copy"><h2 id="ch9-title">{t('ch9.s1.text')}</h2><p>{t('ch9.s2.text')}</p></div>
   </section>
@@ -185,3 +298,4 @@ const chinaItems = [
 <footer class="page-footer"><span aria-label={t('ui.footer_copyright')}>© {t('ui.footer_copyright')}</span><span class="footer-languages">{t('ui.footer_languages')}</span><small class="page-note">{t('ch9.note')}</small></footer>
 <Lightbox closeLabel={t('ui.close_media')} previousLabel={t('ui.previous')} nextLabel={t('ui.next')} />
 <script src={withBase('/scripts/chrome.js')} defer></script>
+<script type="module" src={withBase('/scripts/experience.js')} defer></script>
